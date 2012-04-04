@@ -10,7 +10,7 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.11.5
+Version: 3.11.7
 Release: 1
 URL: http://hplipopensource.com/hplip-web/index.html
 Group: System Environment/Libraries
@@ -19,7 +19,7 @@ Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hp
 Patch0: %{name}-udev.patch
 License: Distributable, no modification permitted
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-ExcludeArch: ppc ppc64 sparc sparc64
+ExcludeArch: arm ppc ppc64 sparc sparc64
 Requires: hplip >= %{version}
 
 %description
@@ -132,6 +132,9 @@ rm -rf %{buildroot}
 %{_datadir}/hplip/data/firmware
 
 %changelog
+* Tue Sep 13 2011 Dominik Mierzejewski <rpm@greysector.net> 3.11.7-1
+- update to 3.11.7
+
 * Tue May 24 2011 Dominik Mierzejewski <rpm@greysector.net> 3.11.5-1
 - update to 3.11.5
 - split firmware into a noarch package
