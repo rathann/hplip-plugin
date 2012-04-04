@@ -10,7 +10,7 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.11.7
+Version: 3.10.9
 Release: 1
 URL: http://hplipopensource.com/hplip-web/index.html
 Group: System Environment/Libraries
@@ -132,20 +132,5 @@ rm -rf %{buildroot}
 %{_datadir}/hplip/data/firmware
 
 %changelog
-* Tue Sep 13 2011 Dominik Mierzejewski <rpm@greysector.net> 3.11.7-1
-- update to 3.11.7
-
-* Tue May 24 2011 Dominik Mierzejewski <rpm@greysector.net> 3.11.5-1
-- update to 3.11.5
-- split firmware into a noarch package
-- move binary plugins into _libdir
-
-* Wed May 04 2011 Dominik Mierzejewski <rpm@greysector.net> 3.11.3a-1
-- update to 3.11.3a
-- fix udev rules file warnings
-
-* Fri Mar 11 2011 Dominik Mierzejewski <rpm@greysector.net> 3.11.1-1
-- update to 3.11.1
-
-* Fri Mar 11 2011 Dominik Mierzejewski <rpm@greysector.net> 3.10.9-1
-- initial build
+* Wed Apr 04 2012 Dominik Mierzejewski <rpm@greysector.net> 3.10.9-1
+- initial build for EL-6 based on Fedora package
