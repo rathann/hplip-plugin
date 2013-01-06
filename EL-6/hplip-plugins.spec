@@ -1,22 +1,21 @@
-%define _enable_debug_packages %{nil}
-%define debug_package          %{nil}
+%global _enable_debug_packages %{nil}
+%global debug_package          %{nil}
 
 %ifarch i686
-%define arch x86_32
+%global arch x86_32
 %endif
 %ifarch x86_64
-%define arch x86_64
+%global arch x86_64
 %endif
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.10.9
+Version: 3.12.2
 Release: 1
 URL: http://hplipopensource.com/hplip-web/index.html
 Group: System Environment/Libraries
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
-Patch0: %{name}-udev.patch
 License: Distributable, no modification permitted
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 ExcludeArch: arm ppc ppc64 sparc sparc64
@@ -86,7 +85,6 @@ HP LaserJet Professional P1566
 %setup -T -c %{name}-%{version}
 chmod +x %{SOURCE0}
 %{SOURCE0} --keep --noexec --target $RPM_BUILD_DIR/%{name}-%{version}
-%patch0 -p1 -b .udev
 
 %build
 echo nothing to build
@@ -132,5 +130,10 @@ rm -rf %{buildroot}
 %{_datadir}/hplip/data/firmware
 
 %changelog
+* Sun Jan 06 2013 Dominik Mierzejewski <rpm@greysector.net> 3.12.2-1
+- update to 3.12.2
+- drop udev rules patch
+- replace define with global in macro definitions
+
 * Wed Apr 04 2012 Dominik Mierzejewski <rpm@greysector.net> 3.10.9-1
 - initial build for EL-6 based on Fedora package
