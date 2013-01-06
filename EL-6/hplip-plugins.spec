@@ -8,6 +8,10 @@
 %global arch x86_64
 %endif
 
+%filter_provides_in %{_libdir}/hplip/.*/plugins/.*\.so$
+%filter_from_requires /\(bb\|fax\)_\(marvell\|soap\|soapht\)/d
+%filter_setup
+
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
 Version: 3.12.2
@@ -134,6 +138,7 @@ rm -rf %{buildroot}
 - update to 3.12.2
 - drop udev rules patch
 - replace define with global in macro definitions
+- filter the plugins from both Requires and Provides as they're detected incorrectly
 
 * Wed Apr 04 2012 Dominik Mierzejewski <rpm@greysector.net> 3.10.9-1
 - initial build for EL-6 based on Fedora package
