@@ -1,26 +1,28 @@
-%define _enable_debug_packages %{nil}
-%define debug_package          %{nil}
-
 %ifarch i686
-%define arch x86_32
+%global arch x86_32
 %endif
 %ifarch x86_64
-%define arch x86_64
+%global arch x86_64
 %endif
+
+# Tweak to have debuginfo - part 1/2
+%define __debug_install_post %{_builddir}/%{?buildsubdir}/find-debuginfo.sh %{_builddir}/%{?buildsubdir}\
+%{nil}
+
+#%%define __provides_exclude_from ^%{_libdir}/hplip/.*/plugins/.*\.so$
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.11.7
+Version: 3.13.2
 Release: 1
 URL: http://hplipopensource.com/hplip-web/index.html
 Group: System Environment/Libraries
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
-Patch0: %{name}-udev.patch
 License: Distributable, no modification permitted
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-ExcludeArch: arm ppc ppc64 sparc sparc64
-Requires: hplip >= %{version}
+ExclusiveArch: i686 x86_64
+Requires: hplip = %{version}
 
 %description
 Binary-only plugins for the following HP multi-function devices,
@@ -86,16 +88,19 @@ HP LaserJet Professional P1566
 %setup -T -c %{name}-%{version}
 chmod +x %{SOURCE0}
 %{SOURCE0} --keep --noexec --target $RPM_BUILD_DIR/%{name}-%{version}
-%patch0 -p1 -b .udev
+
+# Tweak to have debuginfo - part 2/2
+cp -p %{_prefix}/lib/rpm/find-debuginfo.sh .
+sed -i -e 's|strict=true|strict=false|' find-debuginfo.sh
 
 %build
 echo nothing to build
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}{/etc/udev/rules.d,%{_datadir}/hplip/data/firmware,{%{_libdir},%{_datadir}}/hplip/{data,fax,prnt,scan}/plugins}
+mkdir -p %{buildroot}{%{_udevrulesdir},%{_datadir}/hplip/data/firmware,{%{_libdir},%{_datadir}}/hplip/{data,fax,prnt,scan}/plugins}
 
-install -pm644 86-hpmud-hp_laserjet_*.rules %{buildroot}/etc/udev/rules.d/
+install -pm644 86-hpmud-hp_laserjet_*.rules %{buildroot}%{_udevrulesdir}/
 
 install -pm644 hp_laserjet_*.fw.gz %{buildroot}%{_datadir}/hplip/data/firmware/
 
@@ -128,24 +133,25 @@ rm -rf %{buildroot}
 
 %files -n hplip-firmware
 %defattr(-,root,root,-)
-%{_sysconfdir}/udev/rules.d/86-hpmud-hp_laserjet_*.rules
+%{_udevrulesdir}/86-hpmud-hp_laserjet_*.rules
 %{_datadir}/hplip/data/firmware
 
 %changelog
-* Tue Sep 13 2011 Dominik Mierzejewski <rpm@greysector.net> 3.11.7-1
-- update to 3.11.7
+* Sun Apr 07 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.2-1
+- update to 3.13.2
 
-* Tue May 24 2011 Dominik Mierzejewski <rpm@greysector.net> 3.11.5-1
-- update to 3.11.5
-- split firmware into a noarch package
-- move binary plugins into _libdir
+* Sun Feb 17 2013 Dominik Mierzejewski <rpm@greysector.net> 3.12.11-1
+- update to 3.12.11
+- move udev rules to /usr/lib/udev/rules.d, as specified by _udevrulesdir macro
+- enable debuginfo
+- use ExclusiveArch instead of ExcludeArch
+- use strict hplip version Requires
 
-* Wed May 04 2011 Dominik Mierzejewski <rpm@greysector.net> 3.11.3a-1
-- update to 3.11.3a
-- fix udev rules file warnings
+* Sun Jan 06 2013 Dominik Mierzejewski <rpm@greysector.net> 3.12.2-1
+- update to 3.12.2
+- drop udev rules patch
+- replace define with global in macro definitions
+- filter the plugins from both Requires and Provides as they're detected incorrectly
 
-* Fri Mar 11 2011 Dominik Mierzejewski <rpm@greysector.net> 3.11.1-1
-- update to 3.11.1
-
-* Fri Mar 11 2011 Dominik Mierzejewski <rpm@greysector.net> 3.10.9-1
+* Wed Apr 04 2012 Dominik Mierzejewski <rpm@greysector.net> 3.10.9-1
 - initial build
