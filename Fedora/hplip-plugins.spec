@@ -13,7 +13,7 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.13.2
+Version: 3.13.3
 Release: 1
 URL: http://hplipopensource.com/hplip-web/index.html
 Group: System Environment/Libraries
@@ -137,6 +137,9 @@ rm -rf %{buildroot}
 %{_datadir}/hplip/data/firmware
 
 %changelog
+* Sat Apr 20 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.3-1
+- update to 3.13.3
+
 * Sun Apr 07 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.2-1
 - update to 3.13.2
 
