@@ -117,6 +117,15 @@ for drv in marvell soap soapht ; do
   install -pm755 bb_$drv-%{arch}.so %{buildroot}%{_libdir}/hplip/scan/plugins/
   ln -s %{_libdir}/hplip/scan/plugins/bb_$drv-%{arch}.so %{buildroot}%{_datadir}/hplip/scan/plugins/bb_$drv.so
 done
+
+mkdir -p %{buildroot}%{_sharedstatedir}/hp
+cat >> %{buildroot}%{_sharedstatedir}/hp/hplip.state << __EOF__
+[plugin]
+installed = 1
+eula = 1
+version = %{version}
+
+__EOF__
 %endif
 
 %clean
@@ -130,6 +139,7 @@ rm -rf %{buildroot}
 %{_datadir}/hplip/fax/plugins
 %{_datadir}/hplip/prnt/plugins/lj*.so
 %{_datadir}/hplip/scan/plugins
+%{_sharedstatedir}/hp/hplip.state
 
 %files -n hplip-firmware
 %defattr(-,root,root,-)
@@ -139,6 +149,7 @@ rm -rf %{buildroot}
 %changelog
 * Sat Apr 20 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.3-1
 - update to 3.13.3
+- install hplip.state file as well
 
 * Sun Apr 07 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.2-1
 - update to 3.13.2
