@@ -13,14 +13,19 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.13.5
+Version: 3.13.6
 Release: 1
 URL: http://hplipopensource.com/hplip-web/index.html
 Group: System Environment/Libraries
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
-# extracted from hplip-3.13.5.tar.gz
+# extracted from hplip-%%{version}.tar.gz
+# data/rules/56-hpmud_sysfs.rules
 Source1: 56-hpmud_sysfs.rules
+# data/rules/hplip-printer@.service
+Source2: hplip-printer@.service
+# config_usb_printer.py
+Source3: config_usb_printer.py
 License: Distributable, no modification permitted
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 ExclusiveArch: i686 x86_64
@@ -121,9 +126,11 @@ echo nothing to build
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}{%{_udevrulesdir},%{_datadir}/hplip/data/firmware,{%{_libdir},%{_datadir}}/hplip/{data,fax,prnt,scan}/plugins}
+mkdir -p %{buildroot}{%{_bindir},%{_udevrulesdir},%{_unitdir},%{_datadir}/hplip/data/firmware,{%{_libdir},%{_datadir}}/hplip/{data,fax,prnt,scan}/plugins}
 
 install -pm644 %{SOURCE1} %{buildroot}%{_udevrulesdir}/
+install -pm644 %{SOURCE2} %{buildroot}%{_unitdir}/
+install -pm755 %{SOURCE3} %{buildroot}%{_bindir}/hp-config_usb_printer
 
 install -pm644 hp_laserjet_*.fw.gz %{buildroot}%{_datadir}/hplip/data/firmware/
 
@@ -168,10 +175,18 @@ rm -rf %{buildroot}
 
 %files -n hplip-firmware
 %defattr(-,root,root,-)
+%{_bindir}/hp-config_usb_printer
+%{_unitdir}/hplip-printer@.service
 %{_udevrulesdir}/56-hpmud_sysfs.rules
 %{_datadir}/hplip/data/firmware
 
 %changelog
+* Sat Jun 29 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.6-1
+- update to 3.13.6
+- update sysfs rules file from hplip tarball
+- install systemd service unit (not included in hplip rpm)
+- install hp-config_usb_printer (not included in hplip rpm)
+
 * Sun May 26 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.5-1
 - update to 3.13.5
 - updated printer/MFD lists in the descriptions
