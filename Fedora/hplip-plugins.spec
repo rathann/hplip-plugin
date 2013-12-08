@@ -13,10 +13,9 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.13.9
+Version: 3.13.11
 Release: 1
 URL: http://hplipopensource.com/hplip-web/index.html
-Group: System Environment/Libraries
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
 # extracted from hplip-%%{version}.tar.gz
@@ -27,10 +26,10 @@ Source2: hplip-printer@.service
 # config_usb_printer.py
 Source3: config_usb_printer.py
 License: Distributable, no modification permitted
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 ExclusiveArch: i686 x86_64
 BuildRequires: systemd
 Requires: hplip = %{version}
+Requires: hplip-firmware = %{version}-%{release}
 
 %description
 Binary-only plugins for the following HP multi-function devices,
@@ -94,7 +93,6 @@ HP LaserJet Professional P1606
 %package -n hplip-firmware
 Summary: Firmware for HP multi-function devices, printers and scanners
 BuildArch: noarch
-Requires: hplip-plugins = %{version}-%{release}
 
 %description -n hplip-firmware
 Firmware for the following HP multi-function devices, printers and scanners:
@@ -126,7 +124,6 @@ sed -i -e 's|strict=true|strict=false|' find-debuginfo.sh
 echo nothing to build
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}{%{_bindir},%{_udevrulesdir},%{_unitdir},%{_datadir}/hplip/data/firmware,{%{_libdir},%{_datadir}}/hplip/{data,fax,prnt,scan}/plugins}
 
 install -pm644 %{SOURCE1} %{buildroot}%{_udevrulesdir}/
@@ -160,11 +157,7 @@ version = %{version}
 __EOF__
 %endif
 
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root,-)
 %doc license.txt
 %{_libdir}/hplip
 %{_datadir}/hplip/plugin.spec
@@ -175,13 +168,17 @@ rm -rf %{buildroot}
 %{_sharedstatedir}/hp/hplip.state
 
 %files -n hplip-firmware
-%defattr(-,root,root,-)
 %{_bindir}/hp-config_usb_printer
 %{_unitdir}/hplip-printer@.service
 %{_udevrulesdir}/56-hpmud_sysfs.rules
 %{_datadir}/hplip/data/firmware
 
 %changelog
+* Sun Dec 08 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.11-1
+- update to 3.13.11
+- reversed Requires
+- dropped obsolete specfile constructs
+
 * Wed Oct 02 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.9-1
 - update to 3.13.9
 - add missing systemd BR
