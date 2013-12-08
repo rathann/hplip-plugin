@@ -13,7 +13,7 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.13.6
+Version: 3.13.9
 Release: 1
 URL: http://hplipopensource.com/hplip-web/index.html
 Group: System Environment/Libraries
@@ -29,6 +29,7 @@ Source3: config_usb_printer.py
 License: Distributable, no modification permitted
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 ExclusiveArch: i686 x86_64
+BuildRequires: systemd
 Requires: hplip = %{version}
 
 %description
@@ -181,6 +182,14 @@ rm -rf %{buildroot}
 %{_datadir}/hplip/data/firmware
 
 %changelog
+* Wed Oct 02 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.9-1
+- update to 3.13.9
+- add missing systemd BR
+
+* Tue Aug 06 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.7-1
+- update to 3.13.7
+- synced config_usb_printer.py
+
 * Sat Jun 29 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.6-1
 - update to 3.13.6
 - update sysfs rules file from hplip tarball
