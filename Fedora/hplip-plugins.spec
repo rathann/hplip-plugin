@@ -14,13 +14,11 @@
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
 Version: 3.13.11
-Release: 1
+Release: 2
 URL: http://hplipopensource.com/hplip-web/index.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
 # extracted from hplip-%%{version}.tar.gz
-# data/rules/56-hpmud_sysfs.rules
-Source1: 56-hpmud_sysfs.rules
 # data/rules/hplip-printer@.service
 Source2: hplip-printer@.service
 # config_usb_printer.py
@@ -126,9 +124,9 @@ echo nothing to build
 %install
 mkdir -p %{buildroot}{%{_bindir},%{_udevrulesdir},%{_unitdir},%{_datadir}/hplip/data/firmware,{%{_libdir},%{_datadir}}/hplip/{data,fax,prnt,scan}/plugins}
 
-install -pm644 %{SOURCE1} %{buildroot}%{_udevrulesdir}/
 install -pm644 %{SOURCE2} %{buildroot}%{_unitdir}/
-install -pm755 %{SOURCE3} %{buildroot}%{_bindir}/hp-config_usb_printer
+install -pm755 %{SOURCE3} %{buildroot}%{_datadir}/hplip/
+ln -s ../share/hplip/config_usb_printer.py %{buildroot}%{_bindir}/hp-config_usb_printer
 
 install -pm644 hp_laserjet_*.fw.gz %{buildroot}%{_datadir}/hplip/data/firmware/
 
@@ -170,10 +168,14 @@ __EOF__
 %files -n hplip-firmware
 %{_bindir}/hp-config_usb_printer
 %{_unitdir}/hplip-printer@.service
-%{_udevrulesdir}/56-hpmud_sysfs.rules
+%{_datadir}/hplip/config_usb_printer.py*
 %{_datadir}/hplip/data/firmware
 
 %changelog
+* Fri Feb 07 2014 Dominik Mierzejewski <rpm@greysector.net> 3.13.11-2
+- drop wrong udev rules file
+- move config_usb_printer.py into correct location and add symlink
+
 * Sun Dec 08 2013 Dominik Mierzejewski <rpm@greysector.net> 3.13.11-1
 - update to 3.13.11
 - reversed Requires
