@@ -13,8 +13,8 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.13.11
-Release: 2
+Version: 3.14.6
+Release: 1
 URL: http://hplipopensource.com/hplip-web/index.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
@@ -26,7 +26,6 @@ Source3: config_usb_printer.py
 License: Distributable, no modification permitted
 ExclusiveArch: i686 x86_64
 BuildRequires: systemd
-Requires: hplip = %{version}
 Requires: hplip-firmware = %{version}-%{release}
 
 %description
@@ -91,6 +90,7 @@ HP LaserJet Professional P1606
 %package -n hplip-firmware
 Summary: Firmware for HP multi-function devices, printers and scanners
 BuildArch: noarch
+Requires: hplip = %{version}
 
 %description -n hplip-firmware
 Firmware for the following HP multi-function devices, printers and scanners:
@@ -163,15 +163,19 @@ __EOF__
 %{_datadir}/hplip/fax/plugins
 %{_datadir}/hplip/prnt/plugins/lj*.so
 %{_datadir}/hplip/scan/plugins
-%{_sharedstatedir}/hp/hplip.state
 
 %files -n hplip-firmware
 %{_bindir}/hp-config_usb_printer
 %{_unitdir}/hplip-printer@.service
 %{_datadir}/hplip/config_usb_printer.py*
 %{_datadir}/hplip/data/firmware
+%{_sharedstatedir}/hp/hplip.state
 
 %changelog
+* Wed Jun 18 2014 Dominik Mierzejewski <rpm@greysector.net> 3.14.6-1
+- update to 3.14.6
+- move state file and main hplip package dep to -firmware subpackage
+
 * Fri Feb 07 2014 Dominik Mierzejewski <rpm@greysector.net> 3.13.11-2
 - drop wrong udev rules file
 - move config_usb_printer.py into correct location and add symlink
