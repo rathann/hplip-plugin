@@ -111,8 +111,7 @@ HP LaserJet Professional P1566
 
 %prep
 %setup -T -c %{name}-%{version}
-chmod +x %{SOURCE0}
-%{SOURCE0} --keep --noexec --target $RPM_BUILD_DIR/%{name}-%{version}
+sh -x %{SOURCE0} --keep --noexec --target $RPM_BUILD_DIR/%{name}-%{version}
 
 # Tweak to have debuginfo - part 2/2
 cp -p %{_prefix}/lib/rpm/find-debuginfo.sh .
