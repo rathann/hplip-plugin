@@ -5,16 +5,15 @@
 %global arch x86_64
 %endif
 
-# Tweak to have debuginfo - part 1/2
-%define __debug_install_post %{_builddir}/%{?buildsubdir}/find-debuginfo.sh %{_builddir}/%{?buildsubdir}\
-%{nil}
+%define debug_package %{nil}
+%define __strip       /bin/true
 
 #%%define __provides_exclude_from ^%{_libdir}/hplip/.*/plugins/.*\.so$
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.14.6
-Release: 1
+Version: 3.14.10
+Release: 2
 URL: http://hplipopensource.com/hplip-web/index.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
@@ -48,6 +47,7 @@ HP Color LaserJet CM2320fxi MFP
 HP Color LaserJet CM2320n MFP
 HP Color LaserJet CM2320nf MFP
 HP Color LaserJet CP1215
+HP Color LaserJet Pro M176n MFP
 HP LaserJet 1000
 HP LaserJet 1005 Series
 HP LaserJet 1018
@@ -79,6 +79,7 @@ HP LaserJet P2014n
 HP LaserJet P2035
 HP LaserJet P2035n
 HP LaserJet Professional M1217nfw MFP
+HP LaserJet Professional M127fw MFP
 HP LaserJet Professional P1102
 HP LaserJet Professional P1102W
 HP LaserJet Professional P1132
@@ -113,10 +114,6 @@ HP LaserJet Professional P1566
 %setup -T -c %{name}-%{version}
 sh -x %{SOURCE0} --keep --noexec --target $RPM_BUILD_DIR/%{name}-%{version}
 
-# Tweak to have debuginfo - part 2/2
-cp -p %{_prefix}/lib/rpm/find-debuginfo.sh .
-sed -i -e 's|strict=true|strict=false|' find-debuginfo.sh
-
 %build
 echo nothing to build
 
@@ -136,8 +133,10 @@ install -pm644 plugin.spec %{buildroot}%{_datadir}/hplip/
 install -pm755 fax_marvell-%{arch}.so %{buildroot}%{_libdir}/hplip/fax/plugins/
 ln -s %{_libdir}/hplip/fax/plugins/fax_marvell-%{arch}.so %{buildroot}%{_datadir}/hplip/fax/plugins/fax_marvell.so
 
-install -pm755 lj-%{arch}.so %{buildroot}%{_libdir}/hplip/prnt/plugins/
-ln -s %{_libdir}/hplip/prnt/plugins/lj-%{arch}.so %{buildroot}%{_datadir}/hplip/prnt/plugins/lj.so
+for drv in lj hbpl1 ; do
+  install -pm755 $drv-%{arch}.so %{buildroot}%{_libdir}/hplip/prnt/plugins/
+  ln -s %{_libdir}/hplip/prnt/plugins/$drv-%{arch}.so %{buildroot}%{_datadir}/hplip/prnt/plugins/$drv.so
+done
 
 for drv in marvell soap soapht ; do
   install -pm755 bb_$drv-%{arch}.so %{buildroot}%{_libdir}/hplip/scan/plugins/
@@ -171,6 +170,16 @@ __EOF__
 %{_sharedstatedir}/hp/hplip.state
 
 %changelog
+* Sat Jan 17 2015 Dominik Mierzejewski <rpm@greysector.net> 3.14.10-2
+- add new hbpl1.so printer driver
+- new printers:
+  * HP Color LaserJet Pro M176n MFP
+  * HP LaserJet Professional M127fw MFP
+- don't strip binaries (breaks scanning)
+
+* Thu Nov 27 2014 Dominik Mierzejewski <rpm@greysector.net> 3.14.10-1
+- update to 3.14.10
+
 * Wed Jun 18 2014 Dominik Mierzejewski <rpm@greysector.net> 3.14.6-1
 - update to 3.14.6
 - move state file and main hplip package dep to -firmware subpackage
