@@ -14,20 +14,13 @@
 %define debug_package %{nil}
 %define __strip       /bin/true
 
-#%%define __provides_exclude_from ^%{_libdir}/hplip/.*/plugins/.*\.so$
-
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
 Version: 3.15.9
-Release: 1
+Release: 2
 URL: http://hplipopensource.com/hplip-web/index.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
-# extracted from hplip-%%{version}.tar.gz
-# data/rules/hplip-printer@.service
-Source2: hplip-printer@.service
-# config_usb_printer.py
-Source3: config_usb_printer.py
 License: Distributable, no modification permitted
 ExclusiveArch: i686 x86_64
 BuildRequires: systemd
@@ -126,10 +119,6 @@ echo nothing to build
 %install
 mkdir -p %{buildroot}{%{_bindir},%{_udevrulesdir},%{_unitdir},%{_datadir}/hplip/data/firmware,{%{_libdir},%{_datadir}}/hplip/{data,fax,prnt,scan}/plugins}
 
-install -pm644 %{SOURCE2} %{buildroot}%{_unitdir}/
-install -pm755 %{SOURCE3} %{buildroot}%{_datadir}/hplip/
-ln -s ../share/hplip/config_usb_printer.py %{buildroot}%{_bindir}/hp-config_usb_printer
-
 install -pm644 hp_laserjet_*.fw.gz %{buildroot}%{_datadir}/hplip/data/firmware/
 
 %ifarch i686 x86_64 armv7hl aarch64
@@ -172,13 +161,13 @@ __EOF__
 %endif
 
 %files -n hplip-firmware
-%{_bindir}/hp-config_usb_printer
-%{_unitdir}/hplip-printer@.service
-%{_datadir}/hplip/config_usb_printer.py
 %{_datadir}/hplip/data/firmware
 %{_sharedstatedir}/hp/hplip.state
 
 %changelog
+* Thu Nov 12 2015 Dominik Mierzejewski <rpm@greysector.net> 3.15.9-2
+- don't ship systemd service and config_usb_printer.py (hplip ships them now)
+
 * Thu Nov 12 2015 Dominik Mierzejewski <rpm@greysector.net> 3.15.9-1
 - update to 3.15.9
 - include support for ARM
