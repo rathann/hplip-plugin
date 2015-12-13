@@ -1,3 +1,5 @@
+%global hp_arches armv7hl aarch64 i686 x86_64
+
 %ifarch i686
 %global arch x86_32
 %endif
@@ -16,13 +18,13 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.15.9
-Release: 2
+Version: 3.15.11
+Release: 1
 URL: http://hplipopensource.com/hplip-web/index.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
 License: Distributable, no modification permitted
-ExclusiveArch: i686 x86_64
+ExclusiveArch: %{hp_arches} noarch
 BuildRequires: systemd
 Requires: hplip-firmware = %{version}-%{release}
 
@@ -148,7 +150,7 @@ version = %{version}
 
 __EOF__
 
-%ifarch i686 x86_64 armv7hl aarch64
+%ifarch %{hp_arches}
 %files
 %doc license.txt
 %{_libdir}/hplip
@@ -165,6 +167,10 @@ __EOF__
 %{_sharedstatedir}/hp/hplip.state
 
 %changelog
+* Thu Dec 03 2015 Dominik Mierzejewski <rpm@greysector.net> 3.15.11-1
+- update to 3.15.11
+- macroize ExclusiveArch list
+
 * Thu Nov 12 2015 Dominik Mierzejewski <rpm@greysector.net> 3.15.9-2
 - don't ship systemd service and config_usb_printer.py (hplip ships them now)
 
