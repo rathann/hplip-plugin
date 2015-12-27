@@ -19,7 +19,7 @@
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
 Version: 3.15.11
-Release: 1
+Release: 2
 URL: http://hplipopensource.com/hplip-web/index.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
@@ -49,6 +49,7 @@ HP Color LaserJet CM2320n MFP
 HP Color LaserJet CM2320nf MFP
 HP Color LaserJet CP1215
 HP Color LaserJet Pro M176n MFP
+HP Envy 7640 Series
 HP LaserJet 1000
 HP LaserJet 1005 Series
 HP LaserJet 1018
@@ -135,7 +136,7 @@ for drv in lj hbpl1 ; do
   ln -s %{_libdir}/hplip/prnt/plugins/$drv-%{arch}.so %{buildroot}%{_datadir}/hplip/prnt/plugins/$drv.so
 done
 
-for drv in marvell soap soapht ; do
+for drv in escl marvell soap soapht ; do
   install -pm755 bb_$drv-%{arch}.so %{buildroot}%{_libdir}/hplip/scan/plugins/
   ln -s %{_libdir}/hplip/scan/plugins/bb_$drv-%{arch}.so %{buildroot}%{_datadir}/hplip/scan/plugins/bb_$drv.so
 done
@@ -167,6 +168,9 @@ __EOF__
 %{_sharedstatedir}/hp/hplip.state
 
 %changelog
+* Sat Dec 26 2015 Dominik Mierzejewski <rpm@greysector.net> 3.15.11-2
+- add missing escl scan plugin (required for some HP Envy printers)
+
 * Thu Dec 03 2015 Dominik Mierzejewski <rpm@greysector.net> 3.15.11-1
 - update to 3.15.11
 - macroize ExclusiveArch list
