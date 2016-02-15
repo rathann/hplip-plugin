@@ -18,8 +18,8 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.15.11
-Release: 2
+Version: 3.16.2
+Release: 1
 URL: http://hplipopensource.com/hplip-web/index.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
@@ -168,6 +168,9 @@ __EOF__
 %{_sharedstatedir}/hp/hplip.state
 
 %changelog
+* Mon Feb 15 2016 Dominik Mierzejewski <rpm@greysector.net> 3.16.2-1
+- update to 3.16.2
+
 * Sat Dec 26 2015 Dominik Mierzejewski <rpm@greysector.net> 3.15.11-2
 - add missing escl scan plugin (required for some HP Envy printers)
 
