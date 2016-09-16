@@ -19,7 +19,7 @@
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
 Version: 3.16.8
-Release: 1
+Release: 2
 URL: http://hplipopensource.com/hplip-web/index.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 Source0: http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
@@ -114,6 +114,8 @@ HP LaserJet Professional P1566
 %prep
 %setup -T -c %{name}-%{version}
 sh -x %{SOURCE0} --keep --noexec --target $RPM_BUILD_DIR/%{name}-%{version}
+chmod a+r *
+chmod 755 *.so
 
 %build
 echo nothing to build
@@ -152,7 +154,6 @@ __EOF__
 
 %ifarch %{hp_arches}
 %files
-%doc license.txt
 %{_libdir}/hplip
 %{_datadir}/hplip/plugin.spec
 %{_datadir}/hplip/data/plugins
@@ -163,10 +164,15 @@ __EOF__
 %endif
 
 %files -n hplip-firmware
+%doc license.txt
 %{_datadir}/hplip/data/firmware
 %{_sharedstatedir}/hp/hplip.state
 
 %changelog
+* Fri Sep 16 2016 Dominik Mierzejewski <rpm@greysector.net> 3.16.8-2
+- fix file permissions
+- move license.txt to firmware package to ensure it's always available
+
 * Thu Sep 01 2016 Dominik Mierzejewski <rpm@greysector.net> 3.16.8-1
 - update to 3.16.8
 - drop unnecessary BR: systemd
