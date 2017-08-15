@@ -18,7 +18,7 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.17.4
+Version: 3.17.6
 Release: 1
 URL: http://hplipopensource.com/hplip-web/index.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
@@ -169,6 +169,9 @@ __EOF__
 %{_sharedstatedir}/hp/hplip.state
 
 %changelog
+* Tue Aug 15 2017 Dominik Mierzejewski <rpm@greysector.net> 3.17.6-1
+- update to 3.17.6
+
 * Sat May 13 2017 Dominik Mierzejewski <rpm@greysector.net> 3.17.4-1
 - update to 3.17.4
 
