@@ -18,11 +18,12 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.17.9
+Version: 3.17.10
 Release: 1
-URL: http://hplipopensource.com/hplip-web/index.html
+URL: https://developers.hp.com/hp-linux-imaging-and-printing/binaary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
-Source0: https://hplipopensource.com/hplip-web/plugin/hplip-%{version}-plugin.run
+#Source0: https://hplipopensource.com/hplip-web/plugin/hplip-%{version}-plugin.run
+Source0: https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
 License: Distributable, no modification permitted
 ExclusiveArch: %{hp_arches} noarch
 Requires: hplip-firmware = %{version}-%{release}
@@ -121,7 +122,7 @@ chmod 755 *.so
 echo nothing to build
 
 %install
-mkdir -p %{buildroot}{%{_bindir},%{_udevrulesdir},%{_unitdir},%{_datadir}/hplip/data/firmware,{%{_libdir},%{_datadir}}/hplip/{data,fax,prnt,scan}/plugins}
+mkdir -p %{buildroot}{%{_datadir}/hplip/data/firmware,{%{_libdir},%{_datadir}}/hplip/{data,fax,prnt,scan}/plugins,%{_sharedstatedir}/hp}
 
 install -pm644 hp_laserjet_*.fw.gz %{buildroot}%{_datadir}/hplip/data/firmware/
 
@@ -143,7 +144,6 @@ for drv in escl marvell soap soapht ; do
 done
 %endif
 
-mkdir -p %{buildroot}%{_sharedstatedir}/hp
 cat >> %{buildroot}%{_sharedstatedir}/hp/hplip.state << __EOF__
 [plugin]
 installed = 1
@@ -169,6 +169,11 @@ __EOF__
 %{_sharedstatedir}/hp/hplip.state
 
 %changelog
+* Thu Nov 02 2017 Dominik Mierzejewski <rpm@greysector.net> 3.17.10-1
+- update to 3.17.10
+- don't create unused directories anymore
+- update URL
+
 * Mon Sep 25 2017 Dominik Mierzejewski <rpm@greysector.net> 3.17.9-1
 - update to 3.17.9
 - use alternative download location
