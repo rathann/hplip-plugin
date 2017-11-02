@@ -24,8 +24,13 @@ URL: https://developers.hp.com/hp-linux-imaging-and-printing/binaary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 #Source0: https://hplipopensource.com/hplip-web/plugin/hplip-%{version}-plugin.run
 Source0: https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
+Source1: https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run.asc
+# gpg2 --recv-key 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9
+# gpg2 --export --export-options export-minimal 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9
+Source2: 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9.gpg
 License: Distributable, no modification permitted
 ExclusiveArch: %{hp_arches} noarch
+BuildRequires: gnupg2
 Requires: hplip-firmware = %{version}-%{release}
 
 %description
@@ -113,6 +118,7 @@ HP LaserJet Professional P1102W
 HP LaserJet Professional P1566
 
 %prep
+gpgv2 --keyring %{S:2} %{S:1} %{S:0}
 %setup -T -c %{name}-%{version}
 sh -x %{SOURCE0} --keep --noexec --target $RPM_BUILD_DIR/%{name}-%{version}
 chmod a+r *
@@ -173,6 +179,7 @@ __EOF__
 - update to 3.17.10
 - don't create unused directories anymore
 - update URL
+- verify GPG signature
 
 * Mon Sep 25 2017 Dominik Mierzejewski <rpm@greysector.net> 3.17.9-1
 - update to 3.17.9
