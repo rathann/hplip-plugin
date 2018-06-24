@@ -18,7 +18,7 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.18.4
+Version: 3.18.6
 Release: 1
 URL: https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
@@ -177,6 +177,9 @@ __EOF__
 %{_sharedstatedir}/hp/hplip.state
 
 %changelog
+* Sun Jun 24 2018 Dominik Mierzejewski <rpm@greysector.net> 3.18.6-1
+- update to 3.18.6
+
 * Mon Apr 30 2018 Dominik Mierzejewski <rpm@greysector.net> 3.18.4-1
 - update to 3.18.4
 - switch source URLs to alternate location
