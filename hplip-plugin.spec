@@ -145,7 +145,12 @@ chmod 755 *.so
 echo nothing to build
 
 %install
-mkdir -p %{buildroot}{%{_datadir}/hplip/data/firmware,{%{_libdir},%{_datadir}}/hplip/{data,fax,prnt,scan}/plugins,%{_sharedstatedir}/hp}
+pushd %{buildroot}
+mkdir -p ./%{_datadir}/hplip/data/firmware\
+         ./%{_libdir}/hplip/{fax,prnt,scan}/plugins\
+         ./%{_datadir}/hplip/{data,fax,prnt,scan}/plugins\
+         ./%{_sharedstatedir}/hp
+popd
 
 install -pm644 hp_laserjet_*.fw.gz %{buildroot}%{_datadir}/hplip/data/firmware/
 
@@ -168,16 +173,18 @@ done
 %endif
 
 %ifarch i686 x86_64
-mkdir -p %{buildroot}/etc/sane.d/dll.d
-mkdir -p %{buildroot}%{_libdir}/sane
-mkdir -p %{buildroot}/etc/udev/rules.d
-echo "hp2000S1" > %{buildroot}/etc/sane.d/dll.d/hp2000S1
+pushd %{buildroot}
+mkdir -p ./etc/sane.d/dll.d\
+         ./etc/udev/rules.d\
+         ./%{_libdir}/sane
+echo "hp2000S1" > ./etc/sane.d/dll.d/hp2000S1
+popd
+install -pm644 S99-2000S1.rules %{buildroot}/etc/udev/rules.d/
 install -pm755 libsane-hp2000S1-%{arch}.so.1.0.25 %{buildroot}%{_libdir}/sane/libsane-hp2000S1.so.1.0.25
 ln -s libsane-hp2000S1.so.1.0.25 %{buildroot}%{_libdir}/sane/libsane-hp2000S1.so.1
 ln -s libsane-hp2000S1.so.1.0.25 %{buildroot}%{_libdir}/sane/libsane-hp2000S1.so
 install -pm755 libjpeg-%{arch}.so.9.2.0 %{buildroot}%{_libdir}/libjpeg.so.9.2.0
 ldconfig -n %{buildroot}%{_libdir}
-install -pm644 S99-2000S1.rules %{buildroot}/etc/udev/rules.d/
 %endif
 
 cat >> %{buildroot}%{_sharedstatedir}/hp/hplip.state << __EOF__
