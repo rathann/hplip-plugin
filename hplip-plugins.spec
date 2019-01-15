@@ -15,10 +15,17 @@
 
 %define debug_package %{nil}
 %define __strip       /bin/true
+%undefine _missing_build_ids_terminate_build
+
+%ifarch i686 x86_64
+%global scan_drvs escl marvell orblite soap soapht
+%else
+%global scan_drvs escl marvell soap soapht
+%endif
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugins
-Version: 3.18.6
+Version: 3.18.12
 Release: 1
 URL: https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
@@ -38,7 +45,6 @@ Requires: hplip-firmware = %{version}-%{release}
 %description
 Binary-only plugins for the following HP multi-function devices,
 printers and scanners:
-
 HP Color LaserJet 1600
 HP Color LaserJet 2600n
 HP Color LaserJet 3500
@@ -96,6 +102,7 @@ HP LaserJet Professional P1136
 HP LaserJet Professional P1212nf
 HP LaserJet Professional P1566
 HP LaserJet Professional P1606
+HP ScanJet Enterprise Flow 7500
 
 %package -n hplip-firmware
 Summary: Firmware for HP multi-function devices, printers and scanners
@@ -118,6 +125,13 @@ HP LaserJet P1505
 HP LaserJet Professional P1102
 HP LaserJet Professional P1102W
 HP LaserJet Professional P1566
+
+%package -n libsane-hp2000S1
+Summary: SANE driver for HP ScanJet Pro 2000 s1
+Requires: sane-backends
+
+%description -n libsane-hp2000S1
+SANE driver for HP ScanJet Pro 2000 s1.
 
 %prep
 gpgv2 --keyring %{S:2} %{S:1} %{S:0}
@@ -146,10 +160,23 @@ for drv in lj hbpl1 ; do
   ln -s %{_libdir}/hplip/prnt/plugins/$drv-%{arch}.so %{buildroot}%{_datadir}/hplip/prnt/plugins/$drv.so
 done
 
-for drv in escl marvell soap soapht ; do
+for drv in %{scan_drvs} ; do
   install -pm755 bb_$drv-%{arch}.so %{buildroot}%{_libdir}/hplip/scan/plugins/
   ln -s %{_libdir}/hplip/scan/plugins/bb_$drv-%{arch}.so %{buildroot}%{_datadir}/hplip/scan/plugins/bb_$drv.so
 done
+%endif
+
+%ifarch i686 x86_64
+mkdir -p %{buildroot}/etc/sane.d/dll.d
+mkdir -p %{buildroot}%{_libdir}/sane
+mkdir -p %{buildroot}/etc/udev/rules.d
+echo "hp2000S1" > %{buildroot}/etc/sane.d/dll.d/hp2000S1
+install -pm755 libsane-hp2000S1-%{arch}.so.1.0.25 %{buildroot}%{_libdir}/sane/libsane-hp2000S1.so.1.0.25
+ln -s libsane-hp2000S1.so.1.0.25 %{buildroot}%{_libdir}/sane/libsane-hp2000S1.so.1
+ln -s libsane-hp2000S1.so.1.0.25 %{buildroot}%{_libdir}/sane/libsane-hp2000S1.so
+install -pm755 libjpeg-%{arch}.so.9.2.0 %{buildroot}%{_libdir}/libjpeg.so.9.2.0
+ldconfig -n %{buildroot}%{_libdir}
+install -pm644 S99-2000S1.rules %{buildroot}/etc/udev/rules.d/
 %endif
 
 cat >> %{buildroot}%{_sharedstatedir}/hp/hplip.state << __EOF__
@@ -176,7 +203,20 @@ __EOF__
 %{_datadir}/hplip/data/firmware
 %{_sharedstatedir}/hp/hplip.state
 
+%ifarch i686 x86_64
+%files -n libsane-hp2000S1
+/etc/sane.d/dll.d/hp2000S1
+/etc/udev/rules.d/S99-2000S1.rules
+%{_libdir}/libjpeg.so.9*
+%{_libdir}/sane/libsane-hp2000S1.so.1*
+%{_libdir}/sane/libsane-hp2000S1.so
+%endif
+
 %changelog
+* Mon Jan 14 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-1
+- update to 3.18.12
+- add support for HP ScanJet Enterprise Flow 7500 and HP ScanJet Pro 2000 s1
+
 * Sun Jun 24 2018 Dominik Mierzejewski <rpm@greysector.net> 3.18.6-1
 - update to 3.18.6
 
