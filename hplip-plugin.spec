@@ -198,8 +198,8 @@ __EOF__
 %ifarch %{hp_arches}
 %files
 %{_libdir}/hplip
-%{_datadir}/hplip/plugin.spec
 %{_datadir}/hplip/data/plugins
+%exclude %{_datadir}/hplip/data/plugins/license.txt
 %{_datadir}/hplip/fax/plugins
 %{_datadir}/hplip/prnt/plugins/hbpl1*.so
 %{_datadir}/hplip/prnt/plugins/lj*.so
@@ -209,6 +209,8 @@ __EOF__
 %files -n hplip-firmware
 %doc license.txt
 %{_datadir}/hplip/data/firmware
+%{_datadir}/hplip/data/plugins/license.txt
+%{_datadir}/hplip/plugin.spec
 %{_sharedstatedir}/hp/hplip.state
 
 %ifarch i686 x86_64
