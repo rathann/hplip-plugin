@@ -24,7 +24,7 @@
 %endif
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
-Name: hplip-plugins
+Name: hplip-plugin
 Version: 3.18.12
 Release: 1
 URL: https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
@@ -41,6 +41,7 @@ License: Distributable, no modification permitted
 ExclusiveArch: %{hp_arches} noarch
 BuildRequires: gnupg2
 Requires: hplip-firmware = %{version}-%{release}
+Obsoletes: hplip-plugins < 3.18.12-1
 
 %description
 Binary-only plugins for the following HP multi-function devices,
@@ -216,6 +217,7 @@ __EOF__
 * Mon Jan 14 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-1
 - update to 3.18.12
 - add support for HP ScanJet Enterprise Flow 7500 and HP ScanJet Pro 2000 s1
+- rename to hplip-plugin to better follow upstream naming
 
 * Sun Jun 24 2018 Dominik Mierzejewski <rpm@greysector.net> 3.18.6-1
 - update to 3.18.6
