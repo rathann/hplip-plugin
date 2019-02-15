@@ -41,6 +41,7 @@ Patch0: %{name}-paths.patch
 License: Distributable, no modification permitted
 ExclusiveArch: %{hp_arches} noarch
 BuildRequires: gnupg2
+BuildRequires: systemd
 Requires: hplip-firmware = %{version}-%{release}
 Obsoletes: hplip-plugins < 3.18.12-1
 
@@ -178,11 +179,11 @@ done
 %ifarch i686 x86_64
 pushd %{buildroot}
 mkdir -p ./etc/sane.d/dll.d\
-         ./etc/udev/rules.d\
+         .%{_udevrulesdir}\
          ./%{_libdir}/sane
 echo "hp2000S1" > ./etc/sane.d/dll.d/hp2000S1
 popd
-install -pm644 S99-2000S1.rules %{buildroot}/etc/udev/rules.d/
+install -pm644 S99-2000S1.rules %{buildroot}%{_udevrulesdir}/
 install -pm755 libsane-hp2000S1-%{arch}.so.1.0.25 %{buildroot}%{_libdir}/sane/libsane-hp2000S1.so.1.0.25
 ln -s libsane-hp2000S1.so.1.0.25 %{buildroot}%{_libdir}/sane/libsane-hp2000S1.so.1
 ln -s libsane-hp2000S1.so.1.0.25 %{buildroot}%{_libdir}/sane/libsane-hp2000S1.so
@@ -219,7 +220,7 @@ __EOF__
 %ifarch i686 x86_64
 %files -n libsane-hp2000S1
 /etc/sane.d/dll.d/hp2000S1
-/etc/udev/rules.d/S99-2000S1.rules
+%{_udevrulesdir}/S99-2000S1.rules
 %{_libdir}/libjpeg.so.9*
 %{_libdir}/sane/libsane-hp2000S1.so.1*
 %{_libdir}/sane/libsane-hp2000S1.so
@@ -228,6 +229,7 @@ __EOF__
 %changelog
 * Fri Feb 15 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-2
 - patch plugin.spec to contain only required paths (rhbz#1671513)
+- move udev rules to _udevrulesdir
 
 * Mon Jan 14 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-1
 - update to 3.18.12
