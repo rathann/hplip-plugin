@@ -132,6 +132,7 @@ HP LaserJet Professional P1566
 
 %package -n libsane-hp2000S1
 Summary: SANE driver for HP ScanJet Pro 2000 s1
+Requires: %{name}%{_isa} = %{version}-%{release}
 Requires: sane-backends
 
 %description -n libsane-hp2000S1
@@ -233,6 +234,7 @@ __EOF__
 - move udev rules to _udevrulesdir
 - mark sane driver drop-in as config
 - keep old name as Provides:
+- add strict Requires to sane driver subpackage
 
 * Mon Jan 14 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-1
 - update to 3.18.12
