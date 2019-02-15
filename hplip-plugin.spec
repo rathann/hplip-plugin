@@ -44,6 +44,7 @@ BuildRequires: gnupg2
 BuildRequires: systemd
 Requires: hplip-firmware = %{version}-%{release}
 Obsoletes: hplip-plugins < 3.18.12-1
+Provides: hplip-plugins = %{version}-%{release}
 
 %description
 Binary-only plugins for the following HP multi-function devices,
@@ -231,6 +232,7 @@ __EOF__
 - patch plugin.spec to contain only required paths (rhbz#1671513)
 - move udev rules to _udevrulesdir
 - mark sane driver drop-in as config
+- keep old name as Provides:
 
 * Mon Jan 14 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-1
 - update to 3.18.12
