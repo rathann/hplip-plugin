@@ -18,10 +18,12 @@
 %undefine _missing_build_ids_terminate_build
 
 %ifarch i686 x86_64
-%global scan_drvs escl marvell orblite soap soapht
+%global orblite orblite
 %else
-%global scan_drvs escl marvell soap soapht
+%global orblite %{nil}
 %endif
+
+%global scan_drvs escl marvell %{orblite} soap soapht
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugin
