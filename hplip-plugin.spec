@@ -26,7 +26,7 @@
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugin
 Version: 3.18.12
-Release: 1
+Release: 2
 URL: https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 #Source0: https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
@@ -37,6 +37,7 @@ Source1: https://developers.hp.com/sites/default/files/hplip-%{version}-plugin.r
 # gpg2 --recv-key 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9
 # gpg2 --export --export-options export-minimal 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9
 Source2: 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9.gpg
+Patch0: %{name}-paths.patch
 License: Distributable, no modification permitted
 ExclusiveArch: %{hp_arches} noarch
 BuildRequires: gnupg2
@@ -138,6 +139,8 @@ SANE driver for HP ScanJet Pro 2000 s1.
 gpgv2 --keyring %{S:2} %{S:1} %{S:0}
 %setup -T -c %{name}-%{version}
 sh -x %{SOURCE0} --keep --noexec --target $RPM_BUILD_DIR/%{name}-%{version}
+%patch0 -p1 -b .orig
+sed -i -e 's,@libdir@,%{_libdir},g' plugin.spec
 chmod a+r *
 chmod 755 *.so
 
@@ -223,6 +226,9 @@ __EOF__
 %endif
 
 %changelog
+* Fri Feb 15 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-2
+- patch plugin.spec to contain only required paths (rhbz#1671513)
+
 * Mon Jan 14 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-1
 - update to 3.18.12
 - add support for HP ScanJet Enterprise Flow 7500 and HP ScanJet Pro 2000 s1

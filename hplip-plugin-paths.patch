@@ -1,0 +1,105 @@
+diff -up hplip-plugin-3.18.12/plugin.spec.orig hplip-plugin-3.18.12/plugin.spec
+--- hplip-plugin-3.18.12/plugin.spec.orig	2019-02-15 14:54:41.689429299 +0100
++++ hplip-plugin-3.18.12/plugin.spec	2019-02-15 14:56:50.969117883 +0100
+@@ -100,7 +100,7 @@ hp_color_laserJet_pro_mfp_m176n=laserjet
+ hp_laserJet_pro_mfp_m127fw=laserjet_hbpl1_print_plugin,marvell_scan_plugin,license
+ envy_7640_series=escl_scan_plugin,license
+ hp_scanjet_7500=orblite_scan_plugin,license
+-hp_2000S1=hp2000S1_plugin_1,hp2000S1_plugin_2,hp2000S1_plugin_3,hp2000S1_plugin_4,hp2000S1_plugin_5,hp2000S1_plugin_6,hp2000S1_plugin_7,hp2000S1_plugin_8,hp2000S1_plugin_9,hp2000S1_plugin_10,hp2000S1_plugin_11,hp2000S1_plugin_12,hp2000S1_plugin_13,hp2000S1_plugin_14,hp2000S1_plugin_15,hp2000S1_plugin_16,hp2000S1_plugin_17,license
++hp_2000S1=hp2000S1_plugin_1,hp2000S1_plugin_2,hp2000S1_plugin_3,hp2000S1_plugin_4,license
+ 
+ # optional
+ hp_color_laserjet_3500=laserjet_print_plugin,license
+@@ -184,85 +184,20 @@ link=$HOMEDIR/scan/plugins/bb_orblite.so
+ 
+ [hp2000S1_plugin_1] 
+ src=scan/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-trg=/usr/lib/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-link=/usr/lib/sane/libsane-hp2000S1.so
++trg=@libdir@/sane/libsane-hp2000S1-$ARCH.so.1.0.25
++link=@libdir@/sane/libsane-hp2000S1.so
+ 
+ [hp2000S1_plugin_2]
+ src=scan/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-trg=/usr/lib/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-link=/usr/lib/sane/libsane-hp2000S1.so.1
++trg=@libdir@/sane/libsane-hp2000S1-$ARCH.so.1.0.25
++link=@libdir@/sane/libsane-hp2000S1.so.1
+ 
+ [hp2000S1_plugin_3]
+-src=scan/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-trg=/usr/lib64/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-link=/usr/lib64/sane/libsane-hp2000S1.so
+-
+-[hp2000S1_plugin_4]
+-src=scan/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-trg=/usr/lib64/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-link=/usr/lib64/sane/libsane-hp2000S1.so.1
+-
+-[hp2000S1_plugin_5] 
+-src=scan/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-trg=/usr/lib/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-link=/usr/lib/x86_64-linux-gnu/sane/libsane-hp2000S1.so
+-
+-[hp2000S1_plugin_6]
+-src=scan/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-trg=/usr/lib/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-link=/usr/lib/x86_64-linux-gnu/sane/libsane-hp2000S1.so.1
+-
+-[hp2000S1_plugin_7] 
+-src=scan/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-trg=/usr/lib/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-link=/usr/lib/i386-linux-gnu/sane/libsane-hp2000S1.so
+-
+-[hp2000S1_plugin_8]
+-src=scan/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-trg=/usr/lib/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-link=/usr/lib/i386-linux-gnu/sane/libsane-hp2000S1.so.1
+-
+-[hp2000S1_plugin_9] 
+-src=scan/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-trg=/usr/lib64/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-link=/usr/lib64/x86_64-linux-gnu/sane/libsane-hp2000S1.so
+-
+-[hp2000S1_plugin_10]
+-src=scan/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-trg=/usr/lib64/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+-link=/usr/lib64/x86_64-linux-gnu/sane/libsane-hp2000S1.so.1
+- 
+-[hp2000S1_plugin_11]
+-src=scan/sane/libjpeg-$ARCH.so.9.2.0 
+-trg=/usr/local/lib/libjpeg-$ARCH.so.9.2.0 
+-link=/usr/lib64/libjpeg.so.9
+-
+-[hp2000S1_plugin_12]
+ src=scan/sane/libjpeg-$ARCH.so.9.2.0 
+-trg=/usr/local/lib/libjpeg-$ARCH.so.9.2.0 
+-link=/usr/lib/i386-linux-gnu/libjpeg.so.9
++trg=@libdir@/libjpeg.so.9.2.0 
++link=@libdir@/libjpeg.so.9
+ 
+-[hp2000S1_plugin_13]
+-src=scan/sane/libjpeg-$ARCH.so.9.2.0 
+-trg=/usr/local/lib/libjpeg-$ARCH.so.9.2.0 
+-link=/usr/local/lib/libjpeg.so.9
+-
+-[hp2000S1_plugin_14]
+-src=scan/sane/libjpeg-$ARCH.so.9.2.0 
+-trg=/usr/local/lib/libjpeg-$ARCH.so.9.2.0 
+-link=/usr/lib/libjpeg.so.9
+-
+-[hp2000S1_plugin_15]
+-src=scan/sane/libjpeg-$ARCH.so.9.2.0 
+-trg=/usr/local/lib/libjpeg-$ARCH.so.9.2.0 
+-link=/usr/lib/x86_64-linux-gnu/libjpeg.so.9
+-
+-[hp2000S1_plugin_16]
+-src=scan/sane/libjpeg-$ARCH.so.9.2.0 
+-trg=/usr/local/lib/libjpeg-$ARCH.so.9.2.0 
+-link=/usr/lib64/x86_64-linux-gnu/libjpeg.so.9
+-
+-[hp2000S1_plugin_17]
++[hp2000S1_plugin_4]
+ src=data/rules/S99-2000S1.rules
+ trg=/etc/udev/rules.d/S99-2000S1.rules
+ 
