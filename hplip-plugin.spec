@@ -219,7 +219,7 @@ __EOF__
 
 %ifarch i686 x86_64
 %files -n libsane-hp2000S1
-/etc/sane.d/dll.d/hp2000S1
+%config(noreplace) /etc/sane.d/dll.d/hp2000S1
 %{_udevrulesdir}/S99-2000S1.rules
 %{_libdir}/libjpeg.so.9*
 %{_libdir}/sane/libsane-hp2000S1.so.1*
@@ -230,6 +230,7 @@ __EOF__
 * Fri Feb 15 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-2
 - patch plugin.spec to contain only required paths (rhbz#1671513)
 - move udev rules to _udevrulesdir
+- mark sane driver drop-in as config
 
 * Mon Jan 14 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-1
 - update to 3.18.12
