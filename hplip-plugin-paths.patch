@@ -1,6 +1,6 @@
 diff -up hplip-plugin-3.18.12/plugin.spec.orig hplip-plugin-3.18.12/plugin.spec
---- hplip-plugin-3.18.12/plugin.spec.orig	2019-02-15 14:54:41.689429299 +0100
-+++ hplip-plugin-3.18.12/plugin.spec	2019-02-15 14:56:50.969117883 +0100
+--- hplip-plugin-3.18.12/plugin.spec.orig	2018-12-03 08:17:53.000000000 +0100
++++ hplip-plugin-3.18.12/plugin.spec	2019-03-01 14:26:47.318812391 +0100
 @@ -100,7 +100,7 @@ hp_color_laserJet_pro_mfp_m176n=laserjet
  hp_laserJet_pro_mfp_m127fw=laserjet_hbpl1_print_plugin,marvell_scan_plugin,license
  envy_7640_series=escl_scan_plugin,license
@@ -10,7 +10,7 @@ diff -up hplip-plugin-3.18.12/plugin.spec.orig hplip-plugin-3.18.12/plugin.spec
  
  # optional
  hp_color_laserjet_3500=laserjet_print_plugin,license
-@@ -184,85 +184,20 @@ link=$HOMEDIR/scan/plugins/bb_orblite.so
+@@ -184,86 +184,21 @@ link=$HOMEDIR/scan/plugins/bb_orblite.so
  
  [hp2000S1_plugin_1] 
  src=scan/sane/libsane-hp2000S1-$ARCH.so.1.0.25
@@ -101,5 +101,7 @@ diff -up hplip-plugin-3.18.12/plugin.spec.orig hplip-plugin-3.18.12/plugin.spec
 -[hp2000S1_plugin_17]
 +[hp2000S1_plugin_4]
  src=data/rules/S99-2000S1.rules
- trg=/etc/udev/rules.d/S99-2000S1.rules
+-trg=/etc/udev/rules.d/S99-2000S1.rules
++trg=/usr/lib/udev/rules.d/S99-2000S1.rules
+ 
  
