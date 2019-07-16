@@ -1,16 +1,18 @@
-diff -up hplip-plugin-3.18.12/plugin.spec.orig hplip-plugin-3.18.12/plugin.spec
---- hplip-plugin-3.18.12/plugin.spec.orig	2018-12-03 08:17:53.000000000 +0100
-+++ hplip-plugin-3.18.12/plugin.spec	2019-03-01 14:26:47.318812391 +0100
-@@ -100,7 +100,7 @@ hp_color_laserJet_pro_mfp_m176n=laserjet
+diff -up hplip-plugin-3.19.6/plugin.spec.orig hplip-plugin-3.19.6/plugin.spec
+--- hplip-plugin-3.19.6/plugin.spec.orig	2019-06-26 15:14:36.000000000 +0200
++++ hplip-plugin-3.19.6/plugin.spec	2019-07-16 14:00:02.266832429 +0200
+@@ -100,8 +100,8 @@ hp_color_laserJet_pro_mfp_m176n=laserjet
  hp_laserJet_pro_mfp_m127fw=laserjet_hbpl1_print_plugin,marvell_scan_plugin,license
  envy_7640_series=escl_scan_plugin,license
  hp_scanjet_7500=orblite_scan_plugin,license
 -hp_2000S1=hp2000S1_plugin_1,hp2000S1_plugin_2,hp2000S1_plugin_3,hp2000S1_plugin_4,hp2000S1_plugin_5,hp2000S1_plugin_6,hp2000S1_plugin_7,hp2000S1_plugin_8,hp2000S1_plugin_9,hp2000S1_plugin_10,hp2000S1_plugin_11,hp2000S1_plugin_12,hp2000S1_plugin_13,hp2000S1_plugin_14,hp2000S1_plugin_15,hp2000S1_plugin_16,hp2000S1_plugin_17,license
+-hpgt2500=hpgt2500_plugin_1,hpgt2500_plugin_2,hpgt2500_plugin_3,hpgt2500_plugin_4,hpgt2500_plugin_5,hpgt2500_plugin_6,hpgt2500_plugin_7,hpgt2500_plugin_8,hpgt2500_plugin_9,hpgt2500_plugin_10,hpgt2500_plugin_11,hpgt2500_plugin_12,hpgt2500_plugin_13,hpgt2500_plugin_14,hpgt2500_plugin_15,hpgt2500_plugin_16,license
 +hp_2000S1=hp2000S1_plugin_1,hp2000S1_plugin_2,hp2000S1_plugin_3,hp2000S1_plugin_4,license
++hpgt2500=hpgt2500_plugin_1,hpgt2500_plugin_2,hpgt2500_plugin_3,hpgt2500_plugin_4,license
  
  # optional
  hp_color_laserjet_3500=laserjet_print_plugin,license
-@@ -184,86 +184,21 @@ link=$HOMEDIR/scan/plugins/bb_orblite.so
+@@ -185,163 +185,38 @@ link=$HOMEDIR/scan/plugins/bb_orblite.so
  
  [hp2000S1_plugin_1] 
  src=scan/sane/libsane-hp2000S1-$ARCH.so.1.0.25
@@ -75,7 +77,7 @@ diff -up hplip-plugin-3.18.12/plugin.spec.orig hplip-plugin-3.18.12/plugin.spec
  src=scan/sane/libjpeg-$ARCH.so.9.2.0 
 -trg=/usr/local/lib/libjpeg-$ARCH.so.9.2.0 
 -link=/usr/lib/i386-linux-gnu/libjpeg.so.9
-+trg=@libdir@/libjpeg.so.9.2.0 
++trg=@libdir@/libjpeg-$ARCH.so.9.2.0 
 +link=@libdir@/libjpeg.so.9
  
 -[hp2000S1_plugin_13]
@@ -104,4 +106,89 @@ diff -up hplip-plugin-3.18.12/plugin.spec.orig hplip-plugin-3.18.12/plugin.spec
 -trg=/etc/udev/rules.d/S99-2000S1.rules
 +trg=/usr/lib/udev/rules.d/S99-2000S1.rules
  
+ [hpgt2500_plugin_1]
+ src=scan/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-trg=/usr/lib/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-link=/usr/lib/sane/libsane-hpgt2500.so
++trg=@libdir@/sane/libsane-hpgt2500-$ARCH.so.1.0.27
++link=@libdir@/sane/libsane-hpgt2500.so
  
+ [hpgt2500_plugin_2]
+ src=scan/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-trg=/usr/lib/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-link=/usr/lib/sane/libsane-hpgt2500.so.1
++trg=@libdir@/sane/libsane-hpgt2500-$ARCH.so.1.0.27
++link=@libdir@/sane/libsane-hpgt2500.so.1
+ 
+ [hpgt2500_plugin_3]
+-src=scan/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-trg=/usr/lib64/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-link=/usr/lib64/sane/libsane-hpgt2500.so
+-
+-[hpgt2500_plugin_4]
+-src=scan/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-trg=/usr/lib64/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-link=/usr/lib64/sane/libsane-hpgt2500.so.1
+-
+-[hpgt2500_plugin_5]
+-src=scan/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-trg=/usr/lib/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-link=/usr/lib/x86_64-linux-gnu/sane/libsane-hpgt2500.so
+-
+-[hpgt2500_plugin_6]
+-src=scan/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-trg=/usr/lib/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-link=/usr/lib/x86_64-linux-gnu/sane/libsane-hpgt2500.so.1
+-
+-[hpgt2500_plugin_7]
+-src=scan/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-trg=/usr/lib/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-link=/usr/lib/i386-linux-gnu/sane/libsane-hpgt2500.so
+-
+-[hpgt2500_plugin_8]
+-src=scan/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-trg=/usr/lib/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-link=/usr/lib/i386-linux-gnu/sane/libsane-hpgt2500.so.1
+-
+-[hpgt2500_plugin_9]
+-src=scan/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-trg=/usr/lib64/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-link=/usr/lib64/x86_64-linux-gnu/sane/libsane-hpgt2500.so
+-
+-[hpgt2500_plugin_10]
+-src=scan/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-trg=/usr/lib64/sane/libsane-hpgt2500-$ARCH.so.1.0.27
+-link=/usr/lib64/x86_64-linux-gnu/sane/libsane-hpgt2500.so.1
+-
+-[hpgt2500_plugin_11]
+ src=scan/sane/hpgt2500_ntdcmsdll-$ARCH.so
+-trg=/usr/lib/sane/hpgt2500_ntdcmsdll-$ARCH.so
+-link=/usr/lib/sane/hpgt2500_ntdcmsdll.so
++trg=@libdir@/sane/hpgt2500_ntdcmsdll-$ARCH.so
++link=@libdir@/sane/hpgt2500_ntdcmsdll.so
+ 
+-[hpgt2500_plugin_12]
+-src=scan/sane/hpgt2500_ntdcmsdll-$ARCH.so
+-trg=/usr/lib64/sane/hpgt2500_ntdcmsdll-$ARCH.so
+-link=/usr/lib64/sane/hpgt2500_ntdcmsdll.so
+-
+-[hpgt2500_plugin_13]
+-src=scan/sane/hpgt2500_ntdcmsdll-$ARCH.so
+-trg=/usr/lib/sane/hpgt2500_ntdcmsdll-$ARCH.so
+-link=/usr/lib/x86_64-linux-gnu/sane/hpgt2500_ntdcmsdll.so
+-
+-[hpgt2500_plugin_14]
+-src=scan/sane/hpgt2500_ntdcmsdll-$ARCH.so
+-trg=/usr/lib/sane/hpgt2500_ntdcmsdll-$ARCH.so
+-link=/usr/lib/i386-linux-gnu/sane/hpgt2500_ntdcmsdll.so
+-
+-[hpgt2500_plugin_15]
+-src=scan/sane/hpgt2500_ntdcmsdll-$ARCH.so
+-trg=/usr/lib64/sane/hpgt2500_ntdcmsdll-$ARCH.so
+-link=/usr/lib64/x86_64-linux-gnu/sane/hpgt2500_ntdcmsdll.so
+-
+-[hpgt2500_plugin_16]
++[hpgt2500_plugin_4]
+ src=data/rules/40-libsane.rules
+-trg=/etc/udev/rules.d/40-libsane.rules
++trg=/usr/lib/udev/rules.d/40-libsane.rules

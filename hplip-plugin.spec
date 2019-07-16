@@ -27,8 +27,8 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugin
-Version: 3.18.12
-Release: 3
+Version: 3.19.6
+Release: 1
 URL: https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 #Source0: https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
@@ -140,6 +140,14 @@ Requires: sane-backends
 %description -n libsane-hp2000S1
 SANE driver for HP ScanJet Pro 2000 s1.
 
+%package -n libsane-hpgt2500
+Summary: SANE driver for HP ScanJet Pro 2500 f1
+Requires: %{name}%{_isa} = %{version}-%{release}
+Requires: sane-backends
+
+%description -n libsane-hpgt2500
+SANE driver for HP ScanJet Pro 2500 f1.
+
 %prep
 gpgv2 --keyring %{S:2} %{S:1} %{S:0}
 %setup -T -c %{name}-%{version}
@@ -185,12 +193,21 @@ pushd %{buildroot}
 mkdir -p ./etc/sane.d/dll.d\
          .%{_udevrulesdir}\
          ./%{_libdir}/sane
-echo "hp2000S1" > ./etc/sane.d/dll.d/hp2000S1
+for p in hp2000S1 hpgt2500 ; do
+    echo "$p" > ./etc/sane.d/dll.d/${p}
+done
 popd
-install -pm644 S99-2000S1.rules %{buildroot}%{_udevrulesdir}/
-install -pm755 libsane-hp2000S1-%{arch}.so.1.0.25 %{buildroot}%{_libdir}/sane/libsane-hp2000S1.so.1.0.25
-ln -s libsane-hp2000S1.so.1.0.25 %{buildroot}%{_libdir}/sane/libsane-hp2000S1.so.1
-ln -s libsane-hp2000S1.so.1.0.25 %{buildroot}%{_libdir}/sane/libsane-hp2000S1.so
+for r in *.rules ; do
+    install -pm644 ${r} %{buildroot}%{_udevrulesdir}/
+done
+for d in libsane-hp*-%{arch}.so.* ; do
+    td=${d/-%{arch}/}
+    tds=${td%.1.0.*}
+    install -pm755 ${d} %{buildroot}%{_libdir}/sane/${td}
+    ln -s ${td} %{buildroot}%{_libdir}/sane/${tds}.1
+    ln -s ${td} %{buildroot}%{_libdir}/sane/${tds}
+done
+install -pm755 hpgt2500_ntdcmsdll-%{arch}.so %{buildroot}%{_libdir}/sane/hpgt2500_ntdcmsdll.so
 install -pm755 libjpeg-%{arch}.so.9.2.0 %{buildroot}%{_libdir}/libjpeg.so.9.2.0
 ldconfig -n %{buildroot}%{_libdir}
 %endif
@@ -228,9 +245,20 @@ __EOF__
 %{_libdir}/libjpeg.so.9*
 %{_libdir}/sane/libsane-hp2000S1.so.1*
 %{_libdir}/sane/libsane-hp2000S1.so
+
+%files -n libsane-hpgt2500
+%config(noreplace) /etc/sane.d/dll.d/hpgt2500
+%{_udevrulesdir}/40-libsane.rules
+%{_libdir}/sane/libsane-hpgt2500.so.1*
+%{_libdir}/sane/libsane-hpgt2500.so
+%{_libdir}/sane/hpgt2500_ntdcmsdll.so
 %endif
 
 %changelog
+* Mon May 13 2019 Dominik Mierzejewski <rpm@greysector.net> 3.19.6-1
+- update to 3.19.6
+- add support for HP ScanJet Pro 2500 f1
+
 * Fri Mar 01 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-3
 - patch udev rules path in plugin.spec as well
 
