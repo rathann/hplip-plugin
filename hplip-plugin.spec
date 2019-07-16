@@ -151,8 +151,6 @@ mkdir -p ./%{_datadir}/hplip/data/firmware\
 popd
 
 install -pm644 hp_laserjet_*.fw.gz %{buildroot}%{_datadir}/hplip/data/firmware/
-
-%ifarch %{hp_arches}
 install -pm644 license.txt %{buildroot}%{_datadir}/hplip/data/plugins/
 install -pm644 plugin.spec %{buildroot}%{_datadir}/hplip/
 
@@ -168,7 +166,6 @@ for drv in %{scan_drvs} ; do
   install -pm755 bb_$drv-%{arch}.so %{buildroot}%{_libdir}/hplip/scan/plugins/
   ln -s %{_libdir}/hplip/scan/plugins/bb_$drv-%{arch}.so %{buildroot}%{_datadir}/hplip/scan/plugins/bb_$drv.so
 done
-%endif
 
 %ifarch i686 x86_64
 pushd %{buildroot}
