@@ -41,15 +41,17 @@ Source1: https://developers.hp.com/sites/default/files/hplip-%{version}-plugin.r
 Source2: 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9.gpg
 Patch0: %{name}-paths.patch
 License: Distributable, no modification permitted
-ExclusiveArch: %{hp_arches} noarch
+ExclusiveArch: %{hp_arches}
 BuildRequires: gnupg2
 BuildRequires: systemd
-Requires: hplip-firmware = %{version}-%{release}
+Obsoletes: hplip-firmware < 3.19.6-1
 Obsoletes: hplip-plugins < 3.18.12-1
+Provides: hplip-firmware = %{version}-%{release}
 Provides: hplip-plugins = %{version}-%{release}
+Requires: hplip%{_isa} = %{version}
 
 %description
-Binary-only plugins for the following HP multi-function devices,
+Binary-only plugins and firmware for the following HP multi-function devices,
 printers and scanners:
 HP Color LaserJet 1600
 HP Color LaserJet 2600n
@@ -109,28 +111,6 @@ HP LaserJet Professional P1212nf
 HP LaserJet Professional P1566
 HP LaserJet Professional P1606
 HP ScanJet Enterprise Flow 7500
-
-%package -n hplip-firmware
-Summary: Firmware for HP multi-function devices, printers and scanners
-BuildArch: noarch
-Requires: hplip = %{version}
-
-%description -n hplip-firmware
-Firmware for the following HP multi-function devices, printers and scanners:
-
-HP LaserJet 1000
-HP LaserJet 1005 Series
-HP LaserJet 1018
-HP LaserJet 1020
-HP LaserJet P1005
-HP LaserJet P1006
-HP LaserJet P1007
-HP LaserJet P1008
-HP LaserJet P1009
-HP LaserJet P1505
-HP LaserJet Professional P1102
-HP LaserJet Professional P1102W
-HP LaserJet Professional P1566
 
 %package -n libsane-hp2000S1
 Summary: SANE driver for HP ScanJet Pro 2000 s1
@@ -220,22 +200,16 @@ version = %{version}
 
 __EOF__
 
-%ifarch %{hp_arches}
 %files
+%license license.txt
 %{_libdir}/hplip
+%{_datadir}/hplip/data/firmware
 %{_datadir}/hplip/data/plugins
-%exclude %{_datadir}/hplip/data/plugins/license.txt
+%{_datadir}/hplip/plugin.spec
 %{_datadir}/hplip/fax/plugins
 %{_datadir}/hplip/prnt/plugins/hbpl1*.so
 %{_datadir}/hplip/prnt/plugins/lj*.so
 %{_datadir}/hplip/scan/plugins
-%endif
-
-%files -n hplip-firmware
-%doc license.txt
-%{_datadir}/hplip/data/firmware
-%{_datadir}/hplip/data/plugins/license.txt
-%{_datadir}/hplip/plugin.spec
 %{_sharedstatedir}/hp/hplip.state
 
 %ifarch i686 x86_64
@@ -258,6 +232,8 @@ __EOF__
 * Mon May 13 2019 Dominik Mierzejewski <rpm@greysector.net> 3.19.6-1
 - update to 3.19.6
 - add support for HP ScanJet Pro 2500 f1
+- merge noarch -firmware package into main, all printers requiring it need the
+  plugin, too
 
 * Fri Mar 01 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-3
 - patch udev rules path in plugin.spec as well
