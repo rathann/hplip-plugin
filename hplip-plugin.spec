@@ -50,6 +50,8 @@ Provides: hplip-firmware = %{version}-%{release}
 Provides: hplip-plugins = %{version}-%{release}
 Requires: hplip%{_isa} = %{version}
 
+%global __provides_exclude_from ^%{_libdir}/sane/.*$
+
 %description
 Binary-only plugins and firmware for the following HP multi-function devices,
 printers and scanners:
@@ -234,6 +236,7 @@ __EOF__
 - add support for HP ScanJet Pro 2500 f1
 - merge noarch -firmware package into main, all printers requiring it need the
   plugin, too
+- filter Provides: from sane plugins (overlap with sane-backends-libs)
 
 * Fri Mar 01 2019 Dominik Mierzejewski <rpm@greysector.net> 3.18.12-3
 - patch udev rules path in plugin.spec as well
