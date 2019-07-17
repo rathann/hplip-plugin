@@ -112,7 +112,9 @@ HP LaserJet Professional P1136
 HP LaserJet Professional P1212nf
 HP LaserJet Professional P1566
 HP LaserJet Professional P1606
+%ifarch i686 x86_64
 HP ScanJet Enterprise Flow 7500
+%endif
 
 %package -n libsane-hp2000S1
 Summary: SANE driver for HP ScanJet Pro 2000 s1
