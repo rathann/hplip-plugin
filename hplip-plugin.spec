@@ -28,7 +28,7 @@
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugin
 Version: 3.19.6
-Release: 1
+Release: 2
 URL: https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 #Source0: https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
@@ -39,9 +39,9 @@ Source1: https://developers.hp.com/sites/default/files/hplip-%{version}-plugin.r
 # gpg2 --recv-key 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9
 # gpg2 --export --export-options export-minimal 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9
 Source2: 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9.gpg
-Patch0: %{name}-paths.patch
 License: Distributable, no modification permitted
 ExclusiveArch: %{hp_arches}
+BuildRequires: crudini
 BuildRequires: gnupg2
 BuildRequires: systemd
 Obsoletes: hplip-firmware < 3.19.6-1
@@ -120,6 +120,8 @@ HP ScanJet Enterprise Flow 7500
 Summary: SANE driver for HP ScanJet Pro 2000 s1
 Requires: %{name}%{_isa} = %{version}-%{release}
 Requires: sane-backends
+Requires(preun): crudini
+Requires(posttrans): crudini
 
 %description -n libsane-hp2000S1
 SANE driver for HP ScanJet Pro 2000 s1.
@@ -128,6 +130,8 @@ SANE driver for HP ScanJet Pro 2000 s1.
 Summary: SANE driver for HP ScanJet Pro 2500 f1
 Requires: %{name}%{_isa} = %{version}-%{release}
 Requires: sane-backends
+Requires(preun): crudini
+Requires(posttrans): crudini
 
 %description -n libsane-hpgt2500
 SANE driver for HP ScanJet Pro 2500 f1.
@@ -136,10 +140,19 @@ SANE driver for HP ScanJet Pro 2500 f1.
 gpgv2 --keyring %{S:2} %{S:1} %{S:0}
 %setup -T -c %{name}-%{version}
 sh -x %{SOURCE0} --keep --noexec --target $RPM_BUILD_DIR/%{name}-%{version}
-%patch0 -p1 -b .orig
-sed -i -e 's,@libdir@,%{_libdir},g' plugin.spec
 chmod a+r *
 chmod 755 *.so
+# orblite plugin is x86-only
+%ifnarch i686 x86_64
+crudini --del plugin.spec orblite_scan_plugin
+crudini --del plugin.spec products hp_scanjet_7500
+%endif
+# drop the libsane plugins from main package
+# they will be managed via scriptlets upon install/remove
+for s in $(crudini --get plugin.spec products hp_2000S1 | tr ',' '\n' | egrep -v license) ; do crudini --del plugin.spec $s ; done
+crudini --del plugin.spec products hp_2000S1
+for s in $(crudini --get plugin.spec products hpgt2500 | tr ',' '\n' | egrep -v license) ; do crudini --del plugin.spec $s ; done
+crudini --del plugin.spec products hpgt2500
 
 %build
 echo nothing to build
@@ -201,12 +214,52 @@ version = %{version}
 
 __EOF__
 
+%ifarch i686 x86_64
+%posttrans -n libsane-hp2000S1
+cd %{_datadir}/hplip
+crudini --set plugin.spec products hp_2000S1 hp2000S1_plugin_1,hp2000S1_plugin_2,hp2000S1_plugin_3,license
+crudini --set plugin.spec hp2000S1_plugin_1 src scan/sane/libsane-hp2000S1-\$ARCH.so.1.0.25
+crudini --set plugin.spec hp2000S1_plugin_1 trg %{_libdir}/sane/libsane-hp2000S1-$ARCH.so.1.0.25
+crudini --set plugin.spec hp2000S1_plugin_1 link %{_libdir}/sane/libsane-hp2000S1.so
+crudini --set plugin.spec hp2000S1_plugin_2 src scan/sane/libjpeg-\$ARCH.so.9.2.0
+crudini --set plugin.spec hp2000S1_plugin_2 trg %{_libdir}/libjpeg-\$ARCH.so.9.2.0
+crudini --set plugin.spec hp2000S1_plugin_2 link %{_libdir}/libjpeg.so.9
+crudini --set plugin.spec hp2000S1_plugin_3 src data/rules/S99-2000S1.rules
+crudini --set plugin.spec hp2000S1_plugin_3 trg /usr/lib/udev/rules.d/S99-2000S1.rules
+
+%preun -n libsane-hp2000S1
+if [ $1 -eq 0 ]; then
+    cd %{_datadir}/hplip
+    for s in $(crudini --get plugin.spec products hp_2000S1 | tr ',' '\n' | egrep -v license) ; do crudini --del plugin.spec $s ; done
+    crudini --del plugin.spec products hp_2000S1
+fi
+
+%posttrans -n libsane-hpgt2500
+cd %{_datadir}/hplip
+crudini --set plugin.spec products hpgt2500 hpgt2500_plugin_1,hpgt2500_plugin_2,hpgt2500_plugin_3,license
+crudini --set plugin.spec hpgt2500_plugin_1 src scan/sane/libsane-hpgt2500-\$ARCH.so.1.0.27
+crudini --set plugin.spec hpgt2500_plugin_1 trg %{_libdir}/sane/libsane-hpgt2500-\$ARCH.so.1.0.27
+crudini --set plugin.spec hpgt2500_plugin_1 link %{_libdir}/sane/libsane-hpgt2500.so
+crudini --set plugin.spec hpgt2500_plugin_2 src scan/sane/hpgt2500_ntdcmsdll-\$ARCH.so
+crudini --set plugin.spec hpgt2500_plugin_2 trg %{_libdir}/sane/hpgt2500_ntdcmsdll-\$ARCH.so
+crudini --set plugin.spec hpgt2500_plugin_2 link %{_libdir}/sane/hpgt2500_ntdcmsdll.so
+crudini --set plugin.spec hpgt2500_plugin_3 src data/rules/40-libsane.rules
+crudini --set plugin.spec hpgt2500_plugin_3 trg /usr/lib/udev/rules.d/40-libsane.rules
+
+%preun -n libsane-hpgt2500
+if [ $1 -eq 0 ]; then
+    cd %{_datadir}/hplip
+    for s in $(crudini --get plugin.spec products hpgt2500 | tr ',' '\n' | egrep -v license) ; do crudini --del plugin.spec $s ; done
+    crudini --del plugin.spec products hpgt2500
+fi
+%endif
+
 %files
 %license license.txt
 %{_libdir}/hplip
 %{_datadir}/hplip/data/firmware
 %{_datadir}/hplip/data/plugins
-%{_datadir}/hplip/plugin.spec
+%config %{_datadir}/hplip/plugin.spec
 %{_datadir}/hplip/fax/plugins
 %{_datadir}/hplip/prnt/plugins/hbpl1*.so
 %{_datadir}/hplip/prnt/plugins/lj*.so
@@ -230,6 +283,9 @@ __EOF__
 %endif
 
 %changelog
+* Wed Jul 17 2019 Dominik Mierzejewski <rpm@greysector.net> 3.19.6-2
+- manage plugin.spec contents with crudini
+
 * Tue Jul 16 2019 Dominik Mierzejewski <rpm@greysector.net> 3.19.6-1
 - update to 3.19.6
 - add support for HP ScanJet Pro 2500 f1
