@@ -230,7 +230,7 @@ __EOF__
 %endif
 
 %changelog
-* Mon May 13 2019 Dominik Mierzejewski <rpm@greysector.net> 3.19.6-1
+* Tue Jul 16 2019 Dominik Mierzejewski <rpm@greysector.net> 3.19.6-1
 - update to 3.19.6
 - add support for HP ScanJet Pro 2500 f1
 - merge noarch -firmware package into main, all printers requiring it need the
