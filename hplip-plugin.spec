@@ -28,7 +28,7 @@
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugin
 Version: 3.19.6
-Release: 3
+Release: 4
 URL: https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 #Source0: https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
@@ -137,6 +137,29 @@ for s in $(crudini --get plugin.spec products hp_2000S1 | tr ',' '\n' | egrep -v
 crudini --del plugin.spec products hp_2000S1
 for s in $(crudini --get plugin.spec products hpgt2500 | tr ',' '\n' | egrep -v license) ; do crudini --del plugin.spec $s ; done
 crudini --del plugin.spec products hpgt2500
+%else
+for s in $(crudini --get plugin.spec products hp_2000S1 | tr ',' '\n' | egrep -v 'license|hp2000S1_plugin_[1-3]$') ; do crudini --del plugin.spec $s ; done
+crudini --set plugin.spec products hp_2000S1 hp2000S1_plugin_1,hp2000S1_plugin_2,hp2000S1_plugin_3,license
+crudini --set plugin.spec hp2000S1_plugin_1 src scan/sane/libsane-hp2000S1-\$ARCH.so.1.0.25
+crudini --set plugin.spec hp2000S1_plugin_1 trg %{_libdir}/sane/libsane-hp2000S1-\$ARCH.so.1.0.25
+crudini --set plugin.spec hp2000S1_plugin_1 link %{_libdir}/sane/libsane-hp2000S1.so
+crudini --set plugin.spec hp2000S1_plugin_2 src scan/sane/libjpeg-\$ARCH.so.9.2.0
+crudini --set plugin.spec hp2000S1_plugin_2 trg %{_libdir}/libjpeg-\$ARCH.so.9.2.0
+crudini --set plugin.spec hp2000S1_plugin_2 link %{_libdir}/libjpeg.so.9
+crudini --set plugin.spec hp2000S1_plugin_3 src data/rules/S99-2000S1.rules
+crudini --set plugin.spec hp2000S1_plugin_3 trg /usr/lib/udev/rules.d/S99-2000S1.rules
+crudini --del plugin.spec hp2000S1_plugin_3 link
+for s in $(crudini --get plugin.spec products hpgt2500 | tr ',' '\n' | egrep -v 'license|hpgt2500_plugin_[1-3]$') ; do crudini --del plugin.spec $s ; done
+crudini --set plugin.spec products hpgt2500 hpgt2500_plugin_1,hpgt2500_plugin_2,hpgt2500_plugin_3,license
+crudini --set plugin.spec hpgt2500_plugin_1 src scan/sane/libsane-hpgt2500-\$ARCH.so.1.0.27
+crudini --set plugin.spec hpgt2500_plugin_1 trg %{_libdir}/sane/libsane-hpgt2500-\$ARCH.so.1.0.27
+crudini --set plugin.spec hpgt2500_plugin_1 link %{_libdir}/sane/libsane-hpgt2500.so
+crudini --set plugin.spec hpgt2500_plugin_2 src scan/sane/hpgt2500_ntdcmsdll-\$ARCH.so
+crudini --set plugin.spec hpgt2500_plugin_2 trg %{_libdir}/sane/hpgt2500_ntdcmsdll-\$ARCH.so
+crudini --set plugin.spec hpgt2500_plugin_2 link %{_libdir}/sane/hpgt2500_ntdcmsdll.so
+crudini --set plugin.spec hpgt2500_plugin_3 src data/rules/40-libsane.rules
+crudini --set plugin.spec hpgt2500_plugin_3 trg /usr/lib/udev/rules.d/40-libsane.rules
+crudini --del plugin.spec hpgt2500_plugin_3 link
 %endif
 
 %build
@@ -199,32 +222,6 @@ version = %{version}
 
 __EOF__
 
-%ifarch i686 x86_64
-%triggerpostun -- libsane-hp2000S1 = 3.19.6-2
-cd %{_datadir}/hplip
-crudini --set plugin.spec products hp_2000S1 hp2000S1_plugin_1,hp2000S1_plugin_2,hp2000S1_plugin_3,license
-crudini --set plugin.spec hp2000S1_plugin_1 src scan/sane/libsane-hp2000S1-\$ARCH.so.1.0.25
-crudini --set plugin.spec hp2000S1_plugin_1 trg %{_libdir}/sane/libsane-hp2000S1-$ARCH.so.1.0.25
-crudini --set plugin.spec hp2000S1_plugin_1 link %{_libdir}/sane/libsane-hp2000S1.so
-crudini --set plugin.spec hp2000S1_plugin_2 src scan/sane/libjpeg-\$ARCH.so.9.2.0
-crudini --set plugin.spec hp2000S1_plugin_2 trg %{_libdir}/libjpeg-\$ARCH.so.9.2.0
-crudini --set plugin.spec hp2000S1_plugin_2 link %{_libdir}/libjpeg.so.9
-crudini --set plugin.spec hp2000S1_plugin_3 src data/rules/S99-2000S1.rules
-crudini --set plugin.spec hp2000S1_plugin_3 trg /usr/lib/udev/rules.d/S99-2000S1.rules
-
-%triggerpostun -- libsane-hpgt2500 = 3.19.6-2
-cd %{_datadir}/hplip
-crudini --set plugin.spec products hpgt2500 hpgt2500_plugin_1,hpgt2500_plugin_2,hpgt2500_plugin_3,license
-crudini --set plugin.spec hpgt2500_plugin_1 src scan/sane/libsane-hpgt2500-\$ARCH.so.1.0.27
-crudini --set plugin.spec hpgt2500_plugin_1 trg %{_libdir}/sane/libsane-hpgt2500-\$ARCH.so.1.0.27
-crudini --set plugin.spec hpgt2500_plugin_1 link %{_libdir}/sane/libsane-hpgt2500.so
-crudini --set plugin.spec hpgt2500_plugin_2 src scan/sane/hpgt2500_ntdcmsdll-\$ARCH.so
-crudini --set plugin.spec hpgt2500_plugin_2 trg %{_libdir}/sane/hpgt2500_ntdcmsdll-\$ARCH.so
-crudini --set plugin.spec hpgt2500_plugin_2 link %{_libdir}/sane/hpgt2500_ntdcmsdll.so
-crudini --set plugin.spec hpgt2500_plugin_3 src data/rules/40-libsane.rules
-crudini --set plugin.spec hpgt2500_plugin_3 trg /usr/lib/udev/rules.d/40-libsane.rules
-%endif
-
 %files
 %license license.txt
 %{_libdir}/hplip
@@ -250,6 +247,10 @@ crudini --set plugin.spec hpgt2500_plugin_3 trg /usr/lib/udev/rules.d/40-libsane
 %endif
 
 %changelog
+* Wed Aug 28 2019 Dominik Mierzejewski <rpm@greysector.net> 3.19.6-4
+- re-add path fix-up in plugin.spec accidentally dropped in previous release
+- drop obsolete triggers
+
 * Thu Jul 18 2019 Dominik Mierzejewski <rpm@greysector.net> 3.19.6-3
 - merge libsane-subpackages into main, hplip requires sane anyway
 
