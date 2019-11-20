@@ -27,7 +27,7 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugin
-Version: 3.19.8
+Version: 3.19.10
 Release: 1
 URL: https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
@@ -124,7 +124,7 @@ HP ScanJet Pro 2500 f1
 %endif
 
 %prep
-gpgv2 --keyring %{S:2} %{S:1} %{S:0}
+%{gpgverify} --keyring='%{S:2}' --signature='%{S:1}' --data='%{S:0}'
 %setup -T -c %{name}-%{version}
 sh -x %{SOURCE0} --keep --noexec --target $RPM_BUILD_DIR/%{name}-%{version}
 chmod a+r *
@@ -247,6 +247,10 @@ __EOF__
 %endif
 
 %changelog
+* Tue Nov 19 2019 Dominik Mierzejewski <rpm@greysector.net> 3.19.10-1
+- update to 3.19.10
+- use gpgverify macro
+
 * Thu Oct 10 2019 Dominik Mierzejewski <rpm@greysector.net> 3.19.8-1
 - update to 3.19.8
 
