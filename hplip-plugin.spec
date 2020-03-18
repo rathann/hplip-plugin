@@ -27,7 +27,7 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugin
-Version: 3.19.12
+Version: 3.20.3
 Release: 1
 URL: https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
@@ -44,14 +44,6 @@ ExclusiveArch: %{hp_arches}
 BuildRequires: crudini
 BuildRequires: gnupg2
 BuildRequires: systemd
-Obsoletes: hplip-firmware < 3.19.6-1
-Obsoletes: hplip-plugins < 3.18.12-1
-Obsoletes: libsane-hp2000S1 < 3.19.6-3
-Obsoletes: libsane-hpgt2500 < 3.19.6-3
-Provides: hplip-firmware = %{version}-%{release}
-Provides: hplip-plugins = %{version}-%{release}
-Provides: libsane-hp2000S1 = %{version}-%{release}
-Provides: libsane-hpgt2500 = %{version}-%{release}
 Requires: hplip%{_isa} = %{version}
 Requires: sane-backends%{_isa}
 
@@ -247,6 +239,10 @@ __EOF__
 %endif
 
 %changelog
+* Wed Mar 18 2020 Dominik Mierzejewski <rpm@greysector.net> 3.20.3-1
+- update to 3.20.3
+- drop obsolete Provides: and Obsoletes:
+
 * Tue Dec 17 2019 Dominik Mierzejewski <rpm@greysector.net> 3.19.12-1
 - update to 3.19.12
 
