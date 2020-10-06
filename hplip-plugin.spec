@@ -125,12 +125,12 @@ chmod 755 *.so
 %ifnarch i686 x86_64
 crudini --del plugin.spec orblite_scan_plugin
 crudini --del plugin.spec products hp_scanjet_7500
-for s in $(crudini --get plugin.spec products hp_2000S1 | tr ',' '\n' | egrep -v license) ; do crudini --del plugin.spec $s ; done
+for s in $(crudini --get plugin.spec products hp_2000S1 | tr ',' '\n' | grep -E -v license) ; do crudini --del plugin.spec $s ; done
 crudini --del plugin.spec products hp_2000S1
-for s in $(crudini --get plugin.spec products hpgt2500 | tr ',' '\n' | egrep -v license) ; do crudini --del plugin.spec $s ; done
+for s in $(crudini --get plugin.spec products hpgt2500 | tr ',' '\n' | grep -E -v license) ; do crudini --del plugin.spec $s ; done
 crudini --del plugin.spec products hpgt2500
 %else
-for s in $(crudini --get plugin.spec products hp_2000S1 | tr ',' '\n' | egrep -v 'license|hp2000S1_plugin_[1-3]$') ; do crudini --del plugin.spec $s ; done
+for s in $(crudini --get plugin.spec products hp_2000S1 | tr ',' '\n' | grep -E -v 'license|hp2000S1_plugin_[1-3]$') ; do crudini --del plugin.spec $s ; done
 crudini --set plugin.spec products hp_2000S1 hp2000S1_plugin_1,hp2000S1_plugin_2,hp2000S1_plugin_3,license
 crudini --set plugin.spec hp2000S1_plugin_1 src scan/sane/libsane-hp2000S1-\$ARCH.so.1.0.25
 crudini --set plugin.spec hp2000S1_plugin_1 trg %{_libdir}/sane/libsane-hp2000S1-\$ARCH.so.1.0.25
@@ -141,7 +141,7 @@ crudini --set plugin.spec hp2000S1_plugin_2 link %{_libdir}/libjpeg.so.9
 crudini --set plugin.spec hp2000S1_plugin_3 src data/rules/S99-2000S1.rules
 crudini --set plugin.spec hp2000S1_plugin_3 trg %{_udevrulesdir}/S99-2000S1.rules
 crudini --del plugin.spec hp2000S1_plugin_3 link
-for s in $(crudini --get plugin.spec products hpgt2500 | tr ',' '\n' | egrep -v 'license|hpgt2500_plugin_[1-3]$') ; do crudini --del plugin.spec $s ; done
+for s in $(crudini --get plugin.spec products hpgt2500 | tr ',' '\n' | grep -E -v 'license|hpgt2500_plugin_[1-3]$') ; do crudini --del plugin.spec $s ; done
 crudini --set plugin.spec products hpgt2500 hpgt2500_plugin_1,hpgt2500_plugin_2,hpgt2500_plugin_3,license
 crudini --set plugin.spec hpgt2500_plugin_1 src scan/sane/libsane-hpgt2500-\$ARCH.so.1.0.27
 crudini --set plugin.spec hpgt2500_plugin_1 trg %{_libdir}/sane/libsane-hpgt2500-\$ARCH.so.1.0.27
