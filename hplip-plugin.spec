@@ -27,7 +27,7 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugin
-Version: 3.20.6
+Version: 3.20.9
 Release: 1
 URL: https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
@@ -239,6 +239,9 @@ __EOF__
 %endif
 
 %changelog
+* Tue Oct 06 2020 Dominik Mierzejewski <rpm@greysector.net> 3.20.9-1
+- update to 3.20.9
+
 * Wed Jun 17 2020 Dominik Mierzejewski <rpm@greysector.net> 3.20.6-1
 - update to 3.20.6
 - limit systemd build dependency to the package providing _udevrulesdir macro
