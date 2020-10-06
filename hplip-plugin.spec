@@ -139,7 +139,7 @@ crudini --set plugin.spec hp2000S1_plugin_2 src scan/sane/libjpeg-\$ARCH.so.9.2.
 crudini --set plugin.spec hp2000S1_plugin_2 trg %{_libdir}/libjpeg-\$ARCH.so.9.2.0
 crudini --set plugin.spec hp2000S1_plugin_2 link %{_libdir}/libjpeg.so.9
 crudini --set plugin.spec hp2000S1_plugin_3 src data/rules/S99-2000S1.rules
-crudini --set plugin.spec hp2000S1_plugin_3 trg /usr/lib/udev/rules.d/S99-2000S1.rules
+crudini --set plugin.spec hp2000S1_plugin_3 trg %{_udevrulesdir}/S99-2000S1.rules
 crudini --del plugin.spec hp2000S1_plugin_3 link
 for s in $(crudini --get plugin.spec products hpgt2500 | tr ',' '\n' | egrep -v 'license|hpgt2500_plugin_[1-3]$') ; do crudini --del plugin.spec $s ; done
 crudini --set plugin.spec products hpgt2500 hpgt2500_plugin_1,hpgt2500_plugin_2,hpgt2500_plugin_3,license
@@ -150,7 +150,7 @@ crudini --set plugin.spec hpgt2500_plugin_2 src scan/sane/hpgt2500_ntdcmsdll-\$A
 crudini --set plugin.spec hpgt2500_plugin_2 trg %{_libdir}/sane/hpgt2500_ntdcmsdll-\$ARCH.so
 crudini --set plugin.spec hpgt2500_plugin_2 link %{_libdir}/sane/hpgt2500_ntdcmsdll.so
 crudini --set plugin.spec hpgt2500_plugin_3 src data/rules/40-libsane.rules
-crudini --set plugin.spec hpgt2500_plugin_3 trg /usr/lib/udev/rules.d/40-libsane.rules
+crudini --set plugin.spec hpgt2500_plugin_3 trg %{_udevrulesdir}/40-libsane.rules
 crudini --del plugin.spec hpgt2500_plugin_3 link
 %endif
 
