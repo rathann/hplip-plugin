@@ -1,0 +1,24 @@
+diff -up hplip-plugin-3.21.2/40-libsane.rules.orig hplip-plugin-3.21.2/40-libsane.rules
+--- hplip-plugin-3.21.2/40-libsane.rules.orig	2021-02-15 00:59:53.000000000 +0100
++++ hplip-plugin-3.21.2/40-libsane.rules	2021-06-22 10:37:42.366349174 +0200
+@@ -23,7 +23,7 @@
+ # If the scanner is supported by sane-backends, please mail the entry to
+ # the sane-devel mailing list (sane-devel@lists.alioth.debian.org).
+ #
+-ACTION!="add", GOTO="libsane_rules_end"
++ACTION!="add", GOTO="libsane_usb_rules_end"
+ ENV{DEVTYPE}=="usb_device", GOTO="libsane_create_usb_dev"
+ SUBSYSTEM=="usb_device", GOTO="libsane_usb_rules_begin"
+ SUBSYSTEM!="usb_device", GOTO="libsane_usb_rules_end"
+diff -up hplip-plugin-3.21.2/S99-2000S1.rules.orig hplip-plugin-3.21.2/S99-2000S1.rules
+--- hplip-plugin-3.21.2/S99-2000S1.rules.orig	2021-02-15 00:59:53.000000000 +0100
++++ hplip-plugin-3.21.2/S99-2000S1.rules	2021-06-22 10:43:59.295430679 +0200
+@@ -23,7 +23,7 @@
+ # If the scanner is supported by sane-backends, please mail the entry to
+ # the sane-devel mailing list (sane-devel@lists.alioth.debian.org).
+ #
+-ACTION!="add", GOTO="libsane_rules_end"
++ACTION!="add", GOTO="libsane_usb_rules_end"
+ ENV{DEVTYPE}=="usb_device", GOTO="libsane_create_usb_dev"
+ SUBSYSTEM=="usb_device", GOTO="libsane_usb_rules_begin"
+ SUBSYSTEM!="usb_device", GOTO="libsane_usb_rules_end"
