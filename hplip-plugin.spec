@@ -27,8 +27,8 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugin
-Version: 3.21.2
-Release: 2
+Version: 3.21.12
+Release: 1
 URL: https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
 #Source0: https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
@@ -242,6 +242,9 @@ __EOF__
 %endif
 
 %changelog
+* Mon Jan 24 2022 Dominik Mierzejewski <rpm@greysector.net> 3.21.12-1
+- update to 3.21.12
+
 * Tue Jun 22 2021 Dominik Mierzejewski <rpm@greysector.net> 3.21.2-2
 - fix udev rules label references
 
