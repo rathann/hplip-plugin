@@ -121,7 +121,7 @@ HP ScanJet Pro 2500 f1
 %{gpgverify} --keyring='%{S:2}' --signature='%{S:1}' --data='%{S:0}'
 %setup -T -c %{name}-%{version}
 sh -x %{SOURCE0} --keep --noexec --target $RPM_BUILD_DIR/%{name}-%{version}
-%patch0 -p1
+%patch 0 -p1
 chmod a+r *
 chmod 755 *.so
 # orblite and sane plugins are x86-only
@@ -244,6 +244,7 @@ __EOF__
 %changelog
 * Sun Jun 11 2023 Dominik Mierzejewski <dominik@greysector.net> - 3.23.5-1
 - update to 3.22.5
+- fix deprecated patchN macro usage
 
 * Mon Dec 12 2022 Dominik Mierzejewski <dominik@greysector.net> 3.22.10-1
 - update to 3.22.10
