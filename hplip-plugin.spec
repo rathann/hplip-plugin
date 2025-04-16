@@ -27,15 +27,15 @@
 
 Summary: Binary-only plugins for HP multi-function devices, printers and scanners
 Name: hplip-plugin
-Version: 3.24.4
+Version: 3.25.2
 Release: 1
 URL: https://developers.hp.com/hp-linux-imaging-and-printing/binary_plugin.html
 # list of URLs: http://hplip.sourceforge.net/plugin.conf
-#Source0: https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
-#Source1: https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run.asc
+Source0: https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run
+Source1: https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/hplip-%{version}-plugin.run.asc
 # alternate location
-Source0: https://developers.hp.com/sites/default/files/hplip-%{version}-plugin.run
-Source1: https://developers.hp.com/sites/default/files/hplip-%{version}-plugin.run.asc
+#Source0: https://developers.hp.com/sites/default/files/hplip-%{version}-plugin.run
+#Source1: https://developers.hp.com/sites/default/files/hplip-%{version}-plugin.run.asc
 # gpg2 --recv-key 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9
 # gpg2 --export --export-options export-minimal 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9
 Source2: 0x4ABA2F66DBD5A95894910E0673D770CDA59047B9.gpg
@@ -242,6 +242,10 @@ __EOF__
 %endif
 
 %changelog
+* Wed Apr 16 2025 Dominik Mierzejewski <dominik@greysector.net> - 3.25.2-1
+- update to 3.25.2
+- switch to openprinting URLs
+
 * Sat Jul 27 2024 Dominik Mierzejewski <dominik@greysector.net> - 3.24.4-1
 - update to 3.24.4
 
